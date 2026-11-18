@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>MULA — Little Steps, Lighter Days</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#F9F6EE',
+            creamDark: '#EFECE1',
+            sage: '#D8E8C8',
+            sageLight: '#E5EEDB',
+            forest: '#2D5228',
+            forestNav: '#4B6E39',
+            soil: '#8C5E3C',
+            peach: '#F2B8A2',
+            ink: '#1F2E1D',
+            inkMuted: '#5C6B59'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Nunito"', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    body { background-color: #E7E4D8; color: #1F2E1D; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+    .animate-float { animation: floatSlow 3.2s ease-in-out infinite; }
+    .screen-enter { animation: fadeSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center items-center sm:py-6">
+
+  <!-- Mobile Shell Container -->
+  <div id="app-shell" class="relative w-full max-w-[430px] min-h-screen sm:min-h-[844px] sm:h-[844px] bg-cream sm:rounded-[40px] sm:shadow-2xl sm:border-[6px] sm:border-[#DFDDD2] overflow-hidden flex flex-col">
+    
+    <!-- Toast Banner -->
+    <div id="toast-banner" class="pointer-events-none fixed sm:absolute top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[380px] transition-all duration-300 opacity-0 -translate-y-4">
+      <div class="bg-forest text-cream px-4 py-3 rounded-2xl shadow-lg flex items-center gap-3 text-xs font-semibold">
+        <span id="toast-icon" class="text-base">🌱</span>
+        <span id="toast-text">Langkah tersimpan!</span>
+      </div>
+    </div>
+
+    <!-- Main Viewport -->
+    <main id="main-viewport" class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col">
+      <!-- Injected by JS -->
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav id="bottom-nav" class="hidden px-4 pb-5 pt-2 bg-gradient-to-t from-cream via-cream/95 to-transparent z-30">
+      <div class="bg-forestNav rounded-[32px] px-3 py-2.5 shadow-lg flex items-center justify-around text-cream">
+        <button onclick="navigateTab('beranda')" data-tab="beranda" class="nav-btn flex flex-col items-center justify-center w-16 py-1 rounded-2xl transition">
+          <span class="text-lg">🏠</span>
+          <span class="text-[11px] font-semibold mt-0.5">Beranda</span>
+        </button>
+        <button onclick="navigateTab('mulai')" data-tab="mulai" class="nav-btn flex flex-col items-center justify-center w-16 py-1 rounded-2xl transition">
+          <span class="text-lg">⏱️</span>
+          <span class="text-[11px] font-semibold mt-0.5">Mulai</span>
+        </button>
+        <button onclick="navigateTab('sos')" data-tab="sos" class="nav-btn flex flex-col items-center justify-center w-16 py-1 rounded-2xl transition">
+          <span class="text-lg">🚨</span>
+          <span class="text-[11px] font-semibold mt-0.5">SOS</span>
+        </button>
+        <button onclick="navigateTab('jejak')" data-tab="jejak" class="nav-btn flex flex-col items-center justify-center w-16 py-1 rounded-2xl transition">
+          <span class="text-lg">👣</span>
+          <span class="text-[11px] font-semibold mt-0.5">Jejak</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Reusable Modal Container -->
+    <div id="modal-backdrop" class="hidden fixed sm:absolute inset-0 bg-ink/40 backdrop-blur-[2px] z-40 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div id="modal-content" class="w-full max-w-[430px] bg-cream rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar screen-enter">
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    const STORAGE_KEY = 'mula_state_v3';
+
+    // State Default
+    const defaultState = {
+      screen: 'splash', // 'splash', 'namePrompt', 'app'
+      activeTab: 'beranda',
+      user: { name: 'Teman MULA', energyStatus: 'hijau' },
+      selectedMood: 'Bingung',
+      tasks: [],
+      stats: { totalSessions: 0 },
+      // Active working step tracking
+      currentRunningTask: null, // { taskId, subtaskIndex }
+      activeTimerSeconds: 120
+    };
+
+    let state = loadState();
+    let activeTimerInterval = null;
+    let uploadedFileText = '';
+
+    function loadState() {
+      try {
+        const s = localStorage.getItem(STORAGE_KEY);
+        if (s) return { ...defaultState, ...JSON.parse(s) };
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(defaultState));
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function showToast(text, icon = '🌱') {
+      const b = document.getElementById('toast-banner');
+      document.getElementById('toast-text').textContent = text;
+      document.getElementById('toast-icon').textContent = icon;
+      b.classList.remove('opacity-0', '-translate-y-4');
+      b.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        b.classList.add('opacity-0', '-translate-y-4');
+        b.classList.remove('opacity-100', 'translate-y-0');
+      }, 3000);
+    }
+
+    // ==========================================
+    // BACKEND API SYNC
+    // ==========================================
+    async function syncTasks() {
+      try {
+        const res = await fetch(`${API_BASE}/tasks`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          state.tasks = json.data;
+          saveState();
+        }
+      } catch (e) {
+        console.warn('Backend API offline, memakai cache lokal.');
+      }
+    }
+
+    async function syncStats() {
+      try {
+        const res = await fetch(`${API_BASE}/stats`);
+        const json = await res.json();
+        if (json.success && json.data) {
+          state.stats.totalSessions = json.data.total_sessions || 0;
+          saveState();
+        }
+      } catch (e) {}
+    }
+
+    // ==========================================
+    // TEMPLATE TUGAS STANDAR MAHASISWA (FITUR BARU)
+    // ==========================================
+    const TASK_TEMPLATES = {
+      'Laporan Praktikum': [
+        { title: 'Buka folder dokumen & tulis judul laporan', estimated_minutes: 2 },
+        { title: 'Tulis alat, bahan, dan tujuan praktikum', estimated_minutes: 15 },
+        { title: 'Buat tabel data percobaan & tempel hasil', estimated_minutes: 25 },
+        { title: 'Tulis pembahasan singkat & analisis data', estimated_minutes: 30 },
+        { title: 'Tulis kesimpulan 2 paragraf & rapikan format', estimated_minutes: 15 }
+      ],
+      'Skripsi / Proposal': [
+        { title: 'Buka draft skripsi & baca 1 halaman terakhir', estimated_minutes: 2 },
+        { title: 'Cari & rangkum 1 jurnal pendukung di Google Scholar', estimated_minutes: 20 },
+        { title: 'Tulis 3 poin alur paragraf pembahasan berikutnya', estimated_minutes: 15 },
+        { title: 'Tulis draf kasar 1 sub-bab tanpa diedit dulu', estimated_minutes: 35 },
+        { title: 'Perbaiki tata kalimat & masukkan sitasi referensi', estimated_minutes: 20 }
+      ],
+      'Presentasi / PPT': [
+        { title: 'Buka Canva / PowerPoint & pilih template warna polos', estimated_minutes: 2 },
+        { title: 'Buat slide cover & tulis daftar 4 poin materi', estimated_minutes: 10 },
+        { title: 'Isi ringkasan teks 3 slide pertama', estimated_minutes: 20 },
+        { title: 'Tambahkan gambar diagram pendukung', estimated_minutes: 15 },
+        { title: 'Latihan membaca pembukaan 1 menit', estimated_minutes: 5 }
+      ]
+    };
+
+    // ==========================================
+    // NAVIGATION
+    // ==========================================
+    function navigateTab(tab) {
+      if (activeTimerInterval) clearInterval(activeTimerInterval);
+      state.screen = 'app';
+      state.activeTab = tab;
+      saveState();
+      render();
+    }
+
+    function updateNavUI() {
+      const nav = document.getElementById('bottom-nav');
+      if (state.screen !== 'app') {
+        nav.classList.add('hidden');
+        return;
+      }
+      nav.classList.remove('hidden');
+      nav.querySelectorAll('.nav-btn').forEach(btn => {
+        const active = btn.dataset.tab === state.activeTab;
+        btn.className = `nav-btn flex flex-col items-center justify-center w-16 py-1 rounded-2xl transition ${
+          active ? 'text-ink bg-sage/40 font-bold scale-105' : 'text-cream/85 hover:text-cream'
+        }`;
+      });
+    }
+
+    // ==========================================
+    // 1. SPLASH & NAMA GUEST (EVALUASI KAMU)
+    // ==========================================
+    function renderSplash() {
+      return `
+        <div onclick="checkUserPrompt()" class="flex-1 flex flex-col items-center justify-between px-8 py-14 text-center cursor-pointer screen-enter">
+          <div class="h-6"></div>
+          <div>
+            <div class="w-24 h-24 rounded-full bg-[#7C9A48] border-4 border-ink flex items-center justify-center mx-auto mb-4 text-cream text-3xl font-black">
+              ▶
+            </div>
+            <h1 class="font-display text-5xl font-extrabold text-ink">mula</h1>
+            <p class="text-soil font-semibold text-sm mt-1">Little Steps, Lighter Days</p>
+          </div>
+          <div class="w-full space-y-2">
+            <span class="inline-block bg-sageLight border border-sage px-4 py-2 rounded-full text-xs font-bold text-forest">
+              🌱 Haloo! aku Tunny
+            </span>
+            <button class="w-full bg-forest text-cream font-bold py-4 rounded-full shadow-md">
+              Ketuk untuk Mulai
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function checkUserPrompt() {
+      if (!state.user.name || state.user.name === 'Teman MULA') {
+        state.screen = 'namePrompt';
+        render();
+      } else {
+        navigateTab('beranda');
+      }
+    }
+
+    function renderNamePrompt() {
+      return `
+        <div class="flex-1 flex flex-col justify-center px-8 py-10 screen-enter space-y-6">
+          <div class="text-center">
+            <span class="text-5xl">🌰</span>
+            <h2 class="font-display text-2xl font-extrabold text-ink mt-3">Tunny Boleh Tahu Namamu?</h2>
+            <p class="text-xs text-inkMuted mt-1 leading-relaxed">
+              Kamu bisa langsung mulai melangkah tanpa ribet bikin akun atau email.
+            </p>
+          </div>
+
+          <form onsubmit="saveGuestName(event)" class="space-y-3">
+            <input id="guest-name-input" type="text" placeholder="Ketik nama panggilanmu..." required autofocus
+              class="w-full p-4 rounded-2xl bg-white border border-[#DCD8C8] text-sm text-ink font-semibold focus:outline-none focus:border-forest text-center" />
+            <button type="submit" class="w-full bg-forest text-cream font-bold py-4 rounded-full shadow-md text-sm">
+              Lanjut Melangkah Bersama Tunny ✨
+            </button>
+          </form>
+        </div>`;
+    }
+
+    function saveGuestName(e) {
+      e.preventDefault();
+      const val = document.getElementById('guest-name-input').value.trim();
+      state.user.name = val || 'Teman MULA';
+      showToast(`Salam kenal, ${state.user.name}!`, '🌱');
+      navigateTab('beranda');
+    }
+
+    // ==========================================
+    // TAB 1: BERANDA
+    // ==========================================
+    function renderBeranda() {
+      return `
+        <div class="px-6 pt-7 pb-6 space-y-5 screen-enter">
+          <div class="flex items-start justify-between">
+            <div>
+              <h1 class="font-display text-2xl font-extrabold text-ink">Hai ${escapeHtml(state.user.name)}!</h1>
+              <p class="text-xs text-inkMuted mt-0.5">Siap melangkah pelan hari ini?</p>
+            </div>
+            <button onclick="navigateTab('jejak')" class="px-3 py-1.5 rounded-full bg-sageLight text-forest text-xs font-bold flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-forest animate-pulse"></span>
+              <span>Refleksi</span>
+            </button>
+          </div>
+
+          <!-- Mood Selector -->
+          <div class="bg-white rounded-3xl p-5 shadow-card border border-[#ECE8DA] space-y-3">
+            <h2 class="font-display font-bold text-sm text-ink">Hari ini kamu sedang merasa bagaimana?</h2>
+            <div class="grid grid-cols-2 gap-2.5">
+              ${['Bingung', 'Kewalahan', 'Lelah', 'Takut Memulai'].map(m => `
+                <button onclick="selectHomeMood('${m}')" class="p-3.5 rounded-2xl bg-cream border border-[#E6E2D3] text-left hover:bg-sageLight/70 transition flex items-center justify-between">
+                  <span class="text-xs font-bold text-ink">${m}</span>
+                  <span class="text-xs">🌸</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- CTA Mulai 2 Menit -->
+          <button onclick="navigateTab('mulai')" class="w-full bg-forest hover:bg-forestNav text-cream font-bold py-4 rounded-full shadow-md flex items-center justify-center gap-2">
+            <span>⏱️</span> Mulai 2 Menit Sekarang
+          </button>
+
+          <!-- Motivasi -->
+          <div class="bg-sage/70 rounded-2xl p-4 border border-sage flex items-start gap-3">
+            <span class="text-2xl">🌱</span>
+            <div>
+              <div class="text-[10px] font-extrabold uppercase text-forest">Filosofi MULA</div>
+              <p class="text-xs text-ink italic mt-0.5">“Keberhasilan bukan hanya ketika tugas selesai, tapi saat kamu berhasil mengatasi hambatan untuk memulainya.”</p>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function selectHomeMood(mood) {
+      state.selectedMood = mood;
+      navigateTab('mulai');
+    }
+
+    // ==========================================
+    // TAB 2: MULAI (LIST TUGAS, UPLOAD FILE 2MB, TEMPLATE & EDIT LANGKAH)
+    // ==========================================
+    function renderMulai() {
+      return `
+        <div class="px-6 pt-7 pb-6 space-y-5 screen-enter">
+          <div class="flex justify-between items-start">
+            <div>
+              <h1 class="font-display text-2xl font-extrabold text-ink">Tugas & Langkah</h1>
+              <p class="text-xs text-inkMuted mt-0.5">Pecah tugas besar jadi remahan kecil 2 menit.</p>
+            </div>
+            <button onclick="openNewTaskModal()" class="bg-forest text-cream text-xs font-bold px-3.5 py-2 rounded-full shadow hover:bg-forestNav transition">
+              + Tugas Baru
+            </button>
+          </div>
+
+          <!-- List Tasks -->
+          <div class="space-y-4">
+            ${state.tasks.length === 0 ? `
+              <div class="bg-white rounded-3xl p-6 text-center text-xs text-inkMuted border border-[#ECE8DA] space-y-2">
+                <span class="text-3xl block">📋</span>
+                <p class="font-bold text-ink">Belum ada tugas yang kamu tambahkan.</p>
+                <p>Klik tombol <strong>+ Tugas Baru</strong> untuk menambahkan materi kuliah atau skripsi.</p>
+              </div>
+            ` : state.tasks.map(t => {
+              const subtasks = t.subtasks || [];
+              const doneCount = subtasks.filter(s => s.is_completed).length;
+              return `
+                <div class="bg-white rounded-3xl p-5 shadow-card border border-[#ECE8DA] space-y-3">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <span class="text-[10px] font-bold text-forest bg-sageLight px-2.5 py-0.5 rounded-full">${escapeHtml(t.category)}</span>
+                      <h3 class="font-display font-bold text-sm text-ink mt-1">${escapeHtml(t.title)}</h3>
+                      ${t.deadline ? `<span class="text-[10px] text-soil font-semibold block mt-0.5">🗓️ Deadline: ${formatDate(t.deadline)}</span>` : ''}
+                    </div>
+                    <button onclick="deleteTask(${t.id})" class="text-slate-300 hover:text-rose-500 text-xs">✕</button>
+                  </div>
+
+                  <!-- Action Buttons: AI & Template -->
+                  <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button onclick="triggerAiBreakdown(${t.id}, this)" class="py-2 px-2 rounded-xl bg-sageLight text-forest font-bold text-[11px] hover:bg-sage transition flex items-center justify-center gap-1">
+                      <span>✨</span> Pecah dgn AI
+                    </button>
+                    <button onclick="applyTemplateModal(${t.id})" class="py-2 px-2 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 font-bold text-[11px] hover:bg-amber-100 transition flex items-center justify-center gap-1">
+                      <span>📑</span> Pakai Template
+                    </button>
+                  </div>
+
+                  <!-- Subtasks List (Bisa di-edit & tombol timer tidak macet) -->
+                  <div class="space-y-2 pt-2 border-t border-slate-100">
+                    ${subtasks.length === 0 ? `
+                      <p class="text-[11px] text-slate-400 italic text-center py-2">Belum ada langkah. Klik tombol AI atau Template di atas!</p>
+                    ` : subtasks.map((st, idx) => `
+                      <div class="p-2.5 rounded-2xl ${st.is_completed ? 'bg-sageLight/40' : 'bg-cream'} border border-slate-100 flex items-center justify-between gap-2">
+                        <div class="flex-1">
+                          <div class="flex items-center gap-1.5">
+                            <span class="text-[11px] font-bold ${st.is_completed ? 'line-through text-inkMuted' : 'text-ink'}">
+                              ${idx + 1}. ${escapeHtml(st.title)}
+                            </span>
+                            <button onclick="editSubtaskTitle(${t.id}, ${st.id}, '${escapeHtml(st.title)}')" class="text-[10px] text-slate-400 hover:text-forest" title="Edit langkah">✏️</button>
+                          </div>
+                          <span class="text-[10px] text-slate-400">${st.estimated_minutes || 2} menit</span>
+                        </div>
+
+                        ${!st.is_completed ? `
+                          <button onclick="startSpecificTimer(${t.id}, ${idx})" class="px-3 py-1.5 rounded-xl bg-forest text-cream text-[11px] font-bold hover:bg-forestNav shrink-0 shadow-sm active:scale-95 transition">
+                            Mulai ${st.estimated_minutes || 2}m
+                          </button>
+                        ` : `<span class="text-forest text-xs font-bold px-2">✓</span>`}
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>`;
+    }
+
+    // ==========================================
+    // MODAL INPUT TUGAS (DENGAN BATAS FILE 2MB & KETERANGAN)
+    // ==========================================
+    function openNewTaskModal() {
+      uploadedFileText = '';
+      openModal(`
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-display text-lg font-extrabold text-ink">Tambah Tugas Baru</h2>
+            <button onclick="closeModal()" class="text-inkMuted font-bold">✕</button>
+          </div>
+
+          <form onsubmit="handleCreateTask(event)" class="space-y-3 text-xs">
+            <div>
+              <label class="block font-bold text-ink mb-1">Nama Tugas *</label>
+              <input id="modal-task-title" type="text" placeholder="Contoh: Laporan Praktikum Jaringan" required
+                class="w-full p-3 rounded-xl bg-white border border-[#DCD8C8] text-ink focus:outline-none focus:border-forest" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-bold text-ink mb-1">Kategori</label>
+                <input id="modal-task-cat" type="text" placeholder="Contoh: Kuliah"
+                  class="w-full p-2.5 rounded-xl bg-white border border-[#DCD8C8]" />
+              </div>
+              <div>
+                <label class="block font-bold text-ink mb-1">Estimasi Menit</label>
+                <input id="modal-task-est" type="number" placeholder="Contoh: 90"
+                  class="w-full p-2.5 rounded-xl bg-white border border-[#DCD8C8]" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-bold text-ink mb-1">🗓️ Deadline Pengumpulan *</label>
+              <input id="modal-task-deadline" type="datetime-local" required
+                value="${new Date(Date.now() + 48 * 3600 * 1000).toISOString().slice(0, 16)}"
+                class="w-full p-2.5 rounded-xl bg-white border border-[#DCD8C8] font-semibold" />
+            </div>
+
+            <!-- Upload File Dokumen dengan Batasan Ukuran Maks 2 MB -->
+            <div class="bg-sageLight/50 p-3 rounded-2xl border border-sage/60 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <label class="font-bold text-forest">📎 Unggah Dokumen / Silabus Tugas</label>
+                <span class="text-[10px] text-soil font-semibold bg-white px-2 py-0.5 rounded-full">Maks. 2 MB</span>
+              </div>
+              <input id="modal-task-file" type="file" accept=".pdf,.txt,.doc,.docx,image/*" onchange="handleFileValidation(event)"
+                class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-forest file:text-cream cursor-pointer" />
+              <div id="file-status-label" class="text-[10px] text-slate-500">Mendukung file teks, ringkasan PDF modul, atau foto tugas.</div>
+            </div>
+
+            <div>
+              <label class="block font-bold text-ink mb-1">Catatan Tambahan (Opsional)</label>
+              <textarea id="modal-task-desc" rows="2" placeholder="Tempel instruksi tugas dari dosen di sini..."
+                class="w-full p-2.5 rounded-xl bg-white border border-[#DCD8C8]"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-forest text-cream font-bold py-3.5 rounded-full shadow text-xs">
+              Simpan Tugas ✨
+            </button>
+          </form>
+        </div>
+      `);
+    }
+
+    // Validasi file maksimal 2 MB agar tidak timeout
+    function handleFileValidation(event) {
+      const file = event.target.files[0];
+      const label = document.getElementById('file-status-label');
+      uploadedFileText = '';
+
+      if (!file) return;
+
+      const maxBytes = 2 * 1024 * 1024; // 2 MB
+      if (file.size > maxBytes) {
+        alert('⚠️ File terlalu besar! Maksimal ukuran file adalah 2 MB agar proses AI cepat dan tidak timeout.');
+        event.target.value = '';
+        label.innerText = '❌ File ditolak karena melebihi 2 MB.';
+        label.className = 'text-[10px] text-rose-600 font-bold';
+        return;
+      }
+
+      label.innerText = `⏳ Membaca ${file.name}...`;
+      label.className = 'text-[10px] text-forest font-bold';
+
+      const reader = new FileReader();
+      if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+        reader.onload = (e) => {
+          uploadedFileText = e.target.result.slice(0, 2500); // 2500 karakter cukup untuk prompt AI
+          label.innerText = `✓ File ${file.name} siap dianalisis!`;
+        };
+        reader.readAsText(file);
+      } else {
+        uploadedFileText = `[Dokumen tugas: ${file.name}, ukuran: ${(file.size/1024).toFixed(1)} KB]`;
+        label.innerText = `✓ File ${file.name} dilampirkan!`;
+      }
+    }
+
+    async function handleCreateTask(e) {
+      e.preventDefault();
+      const title = document.getElementById('modal-task-title').value.trim();
+      const category = document.getElementById('modal-task-cat').value.trim() || 'Akademik';
+      const deadline = document.getElementById('modal-task-deadline').value;
+      const est = document.getElementById('modal-task-est').value;
+      const desc = document.getElementById('modal-task-desc').value.trim();
+
+      let context = [];
+      if (uploadedFileText) context.push(`Dokumen: ${uploadedFileText}`);
+      if (desc) context.push(`Catatan: ${desc}`);
+
+      const fullTitle = context.length > 0 ? `${title} (${context.join(' | ')})` : title;
+
+      await fetch(`${API_BASE}/tasks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: fullTitle,
+          category,
+          deadline: deadline.replace('T', ' ') + ':00',
+          estimated_minutes: est ? parseInt(est) : 90
+        })
+      });
+
+      closeModal();
+      showToast('Tugas berhasil disimpan!', '📋');
+      await syncTasks();
+      render();
+    }
+
+    async function deleteTask(id) {
+      if (!confirm('Hapus tugas ini?')) return;
+      await fetch(`${API_BASE}/tasks/${id}`, { method: 'DELETE' });
+      await syncTasks();
+      render();
+    }
+
+    // ==========================================
+    // EDIT LANGKAH & TEMPLATE MODAL
+    // ==========================================
+    async function editSubtaskTitle(taskId, subtaskId, oldTitle) {
+      const newTitle = prompt('Ubah deskripsi langkah ini:', oldTitle);
+      if (!newTitle || newTitle.trim() === '') return;
+
+      // Update di backend atau lokal
+      const task = state.tasks.find(t => t.id === taskId);
+      if (task) {
+        const st = (task.subtasks || []).find(s => s.id === subtaskId);
+        if (st) st.title = newTitle.trim();
+        saveState();
+        render();
+        showToast('Langkah diperbarui!', '✏️');
+      }
+    }
+
+    function applyTemplateModal(taskId) {
+      openModal(`
+        <div class="space-y-4 text-xs">
+          <div class="flex justify-between items-center">
+            <h2 class="font-display text-base font-extrabold text-ink">Pilih Template Tugas</h2>
+            <button onclick="closeModal()" class="font-bold">✕</button>
+          </div>
+          <p class="text-inkMuted">Gunakan langkah standar yang sudah dirancang untuk jenis tugas kampus:</p>
+          <div class="space-y-2">
+            ${Object.keys(TASK_TEMPLATES).map(key => `
+              <button onclick="applyTemplateToTask(${taskId}, '${key}')" class="w-full p-3 bg-white border border-[#DCD8C8] rounded-xl text-left hover:bg-sageLight font-bold text-ink flex justify-between">
+                <span>📑 ${key}</span>
+                <span class="text-forest">Terapkan →</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `);
+    }
+
+    async function applyTemplateToTask(taskId, templateKey) {
+      const steps = TASK_TEMPLATES[templateKey];
+      const task = state.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      task.subtasks = steps.map((s, idx) => ({
+        id: Date.now() + idx,
+        title: s.title,
+        estimated_minutes: s.estimated_minutes,
+        is_completed: false
+      }));
+
+      saveState();
+      closeModal();
+      showToast(`Template '${templateKey}' berhasil dipasang!`, '📑');
+      render();
+    }
+
+    // Trigger AI Breakdown
+    async function triggerAiBreakdown(taskId, btn) {
+      const oldText = btn.innerHTML;
+      btn.innerHTML = '<span>⏳</span> Gemini sedang memecah...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/tasks/${taskId}/breakdown`, { method: 'POST' });
+        const json = await res.json();
+        if (json.success) {
+          showToast('Tugas berhasil dipecah akurat oleh AI!', '✨');
+          await syncTasks();
+          render();
+        } else {
+          alert(json.message || 'Gagal menghubungi AI.');
+        }
+      } catch (e) {
+        alert('Gagal menghubungi AI.');
+      } finally {
+        btn.innerHTML = oldText;
+        btn.disabled = false;
+      }
+    }
+
+    // ==========================================
+    // TIMER 2 MENIT: BISA DIKLIK DI SEMUA LANGKAH & LANJUT KE LANGKAH BERIKUTNYA
+    // ==========================================
+    function startSpecificTimer(taskId, subtaskIndex) {
+      const task = state.tasks.find(t => t.id === taskId);
+      if (!task || !task.subtasks[subtaskIndex]) return;
+
+      state.currentRunningTask = { taskId, subtaskIndex };
+      const subtask = task.subtasks[subtaskIndex];
+      const minutes = subtask.estimated_minutes || 2;
+      state.activeTimerSeconds = minutes * 60;
+
+      openTimerModal(subtask.title, minutes);
+    }
+
+    function openTimerModal(title, minutes) {
+      openModal(`
+        <div class="text-center space-y-4">
+          <span class="text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-bold">Fokus Langkah</span>
+          <h3 class="text-sm font-bold text-ink max-w-[280px] mx-auto">${escapeHtml(title)}</h3>
+          
+          <div class="my-4">
+            <div id="modal-timer-display" class="text-5xl font-black text-forest">02:00</div>
+            <p class="text-[11px] text-inkMuted mt-1">Hanya 2 menit untuk mengatasi hambatan awal.</p>
+          </div>
+
+          <div class="space-y-2 pt-2">
+            <button onclick="startModalCountdown()" id="btn-start-countdown" class="w-full bg-forest text-cream font-bold py-3.5 rounded-full text-xs shadow">
+              Mulai Timer
+            </button>
+            <button onclick="finishAndOfferNextStep()" class="w-full bg-sageLight text-forest font-bold py-2.5 rounded-full text-xs">
+              Tandai Selesai Langkah Ini ✓
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function startModalCountdown() {
+      const btn = document.getElementById('btn-start-countdown');
+      if (btn) btn.classList.add('hidden');
+
+      if (activeTimerInterval) clearInterval(activeTimerInterval);
+      activeTimerInterval = setInterval(() => {
+        state.activeTimerSeconds--;
+        const m = String(Math.floor(state.activeTimerSeconds / 60)).padStart(2, '0');
+        const s = String(state.activeTimerSeconds % 60).padStart(2, '0');
+        const d = document.getElementById('modal-timer-display');
+        if (d) d.innerText = `${m}:${s}`;
+
+        if (state.activeTimerSeconds <= 0) {
+          clearInterval(activeTimerInterval);
+          finishAndOfferNextStep();
+        }
+      }, 1000);
+    }
+
+    // ALUR EFISIEN: DITAWARKAN LANJUT KE LANGKAH BERIKUTNYA ATAU ISTIRAHAT
+    async function finishAndOfferNextStep() {
+      if (activeTimerInterval) clearInterval(activeTimerInterval);
+
+      // Catat log sesi ke backend
+      try {
+        await fetch(`${API_BASE}/logs`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ activity_type: 'timer_2min_completed' })
+        });
+      } catch (e) {}
+
+      state.stats.totalSessions++;
+
+      // Tandai subtask saat ini sudah selesai
+      if (state.currentRunningTask) {
+        const { taskId, subtaskIndex } = state.currentRunningTask;
+        const task = state.tasks.find(t => t.id === taskId);
+        if (task && task.subtasks[subtaskIndex]) {
+          task.subtasks[subtaskIndex].is_completed = true;
+        }
+
+        saveState();
+
+        // Cek apakah masih ada langkah berikutnya di tugas yang sama
+        const nextIndex = subtaskIndex + 1;
+        const hasNext = task && task.subtasks[nextIndex];
+
+        if (hasNext) {
+          const nextSub = task.subtasks[nextIndex];
+          openModal(`
+            <div class="text-center space-y-4">
+              <span class="text-3xl">🎉</span>
+              <h3 class="font-display font-extrabold text-base text-ink">Hebat, Langkah Berhasil Diresmikan!</h3>
+              <p class="text-xs text-inkMuted leading-relaxed">
+                Kamu sudah melewati rasa beratnya. Mau langsung lanjut ke langkah berikutnya mumpung pikiranmu sudah jalan?
+              </p>
+              <div class="bg-white p-3 rounded-2xl border border-slate-100 text-xs font-bold text-ink">
+                Langkah Berikutnya: "${escapeHtml(nextSub.title)}"
+              </div>
+              <div class="space-y-2 pt-2">
+                <button onclick="startSpecificTimer(${taskId}, ${nextIndex})" class="w-full bg-forest text-cream font-bold py-3.5 rounded-full text-xs shadow">
+                  Lanjut Langkah Berikutnya (Mulai 2m) →
+                </button>
+                <button onclick="closeModal(); render(); showToast('Prosesmu hebat hari ini!');" class="w-full bg-creamDark text-ink font-bold py-2.5 rounded-full text-xs">
+                  Cukup untuk Sekarang & Istirahat
+                </button>
+              </div>
+            </div>
+          `);
+          return;
+        }
+      }
+
+      closeModal();
+      showToast('Keren! Seluruh langkah tugas selesai!', '🎉');
+      render();
+    }
+
+    // ==========================================
+    // TAB 3: SOS DEADLINE
+    // ==========================================
+    async function renderSosDeadline() {
+      let data = { status_warning: 'aman', message: 'Memeriksa jadwal...', recommended_schedule: [] };
+      try {
+        const res = await fetch(`${API_BASE}/sos-deadline`);
+        data = await res.json();
+      } catch (e) {}
+
+      return `
+        <div class="px-6 pt-7 pb-6 space-y-5 screen-enter">
+          <div>
+            <span class="inline-flex items-center gap-1.5 bg-[#F7DDD8] text-[#8C2D19] text-xs font-extrabold px-3 py-1 rounded-full mb-2">
+              <span>🚨</span> SOS Deadline
+            </span>
+            <h1 class="font-display text-2xl font-extrabold text-ink">Rencana Penyelamatan</h1>
+            <p class="text-xs text-inkMuted mt-1">Jadwal realistis agar kamu tidak burnout atau begadang semalaman.</p>
+          </div>
+
+          <div class="p-4 rounded-3xl ${data.status_warning === 'bahaya' ? 'bg-rose-50 border border-rose-200' : 'bg-white border border-[#ECE8DA]'} space-y-2">
+            <div class="font-bold text-xs ${data.status_warning === 'bahaya' ? 'text-rose-700' : 'text-forest'}">
+              ${data.status_warning === 'bahaya' ? '⚠️ Beban Cukup Padat' : '🌿 Jadwal Terkendali'}
+            </div>
+            <p class="text-xs text-ink leading-relaxed">${data.message}</p>
+          </div>
+
+          <div class="space-y-3">
+            <span class="text-xs font-extrabold uppercase text-inkMuted">Urutan Pengerjaan Realistis</span>
+            ${(!data.recommended_schedule || data.recommended_schedule.length === 0) ? `
+              <div class="bg-white p-4 rounded-2xl text-xs text-inkMuted">Tidak ada tugas mendekati deadline. Semua aman!</div>
+            ` : data.recommended_schedule.map(s => `
+              <div class="bg-white rounded-2xl p-4 border border-[#ECE8DA] shadow-card space-y-1">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-bold text-ink">${escapeHtml(s.task_title)}</span>
+                  <span class="text-[10px] font-bold text-soil">${s.deadline}</span>
+                </div>
+                <p class="text-xs text-forest font-semibold mt-1">💡 ${escapeHtml(s.action_plan)}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>`;
+    }
+
+    // ==========================================
+    // TAB 4: JEJAK LANGKAH & CEK ENERGI MINGGUAN (HANYA MUNCUL DI SINI)
+    // ==========================================
+    function renderJejak() {
+      return `
+        <div class="px-6 pt-7 pb-6 space-y-5 screen-enter">
+          <div>
+            <h1 class="font-display text-2xl font-extrabold text-ink">Jejak Langkah 👣</h1>
+            <p class="text-xs text-inkMuted mt-1">Catatan langkah kecil tanpa target yang menghakimi.</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-sage/70 rounded-2xl p-4 text-center border border-sage">
+              <div class="font-display text-3xl font-extrabold text-forest">${state.stats.totalSessions}</div>
+              <div class="text-xs font-bold text-ink mt-1">Sesi 2 Menit Selesai</div>
+            </div>
+            <div class="bg-white rounded-2xl p-4 text-center shadow-card border border-[#ECE8DA]">
+              <div class="font-display text-3xl font-extrabold text-soil">${state.tasks.length}</div>
+              <div class="text-xs font-bold text-ink mt-1">Tugas Terdata</div>
+            </div>
+          </div>
+
+          <!-- Cek Energi Mingguan (Refleksi Berkala, Bukan Tiap Langkah) -->
+          <div class="bg-white rounded-3xl p-5 shadow-card border border-[#ECE8DA] space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-extrabold uppercase text-forest">Cek Energi Mingguan ⚡</span>
+              <span class="text-[10px] bg-sageLight text-forest px-2 py-0.5 rounded-full font-bold">1x Seminggu</span>
+            </div>
+            <p class="text-xs text-inkMuted">
+              Bagaimana kondisi fisik dan mentalmu dalam beberapa hari terakhir?
+            </p>
+            <button onclick="openEnergyCheckModal()" class="w-full bg-forest text-cream font-bold py-2.5 rounded-xl text-xs">
+              Mulai Refleksi Energi
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function openEnergyCheckModal() {
+      openModal(`
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-display text-lg font-extrabold text-ink">Refleksi Energi Mingguan</h2>
+            <button onclick="closeModal()" class="text-inkMuted font-bold">✕</button>
+          </div>
+          <form onsubmit="handleEnergySubmit(event)" class="space-y-3 text-xs">
+            <div>
+              <label class="block font-bold text-ink mb-1">1. Bagaimana kualitas tidurmu minggu ini?</label>
+              <select id="eq-1" class="w-full p-2.5 rounded-xl bg-white border border-[#DCD8C8]">
+                <option value="2">Cukup nyenyak & segar</option>
+                <option value="1">Sering begadang / kurang tidur</option>
+                <option value="0">Sangat buruk & cemas</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-ink mb-1">2. Beban tugas yang sedang kamu rasakan?</label>
+              <select id="eq-2" class="w-full p-2.5 rounded-xl bg-white border border-[#DCD8C8]">
+                <option value="2">Masih bisa diatur pelan-pelan</option>
+                <option value="1">Mulai menumpuk & tegang</option>
+                <option value="0">Sangat berat & bingung</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full bg-forest text-cream font-bold py-3 rounded-full text-xs">
+              Lihat Hasil Refleksi
+            </button>
+          </form>
+        </div>
+      `);
+    }
+
+    function handleEnergySubmit(e) {
+      e.preventDefault();
+      const score = Number(document.getElementById('eq-1').value) + Number(document.getElementById('eq-2').value);
+      let status = 'Hijau (Energi Relatif Baik)', desc = 'Ritmemu seimbang. Teruskan langkah kecil harianmu!';
+      if (score <= 1) {
+        status = 'Merah (Butuh Perhatian Lebih)';
+        desc = 'Istirahatlah hari ini tanpa rasa bersalah. Pertimbangkan konseling kampus jika diperlukan.';
+      } else if (score <= 2) {
+        status = 'Kuning (Mulai Kewalahan)';
+        desc = 'Kurangi target harianmu dan sisipkan jeda istirahat 15-20 menit.';
+      }
+      openModal(`
+        <div class="text-center space-y-3">
+          <span class="text-4xl">🌱</span>
+          <h3 class="font-display font-extrabold text-base text-ink">${status}</h3>
+          <p class="text-xs text-inkMuted leading-relaxed">${desc}</p>
+          <button onclick="closeModal()" class="w-full bg-forest text-cream font-bold py-2.5 rounded-full text-xs">Mengerti</button>
+        </div>
+      `);
+    }
+
+    // Modal Helpers
+    function openModal(html) {
+      document.getElementById('modal-content').innerHTML = html;
+      document.getElementById('modal-backdrop').classList.remove('hidden');
+    }
+    function closeModal() {
+      document.getElementById('modal-backdrop').classList.add('hidden');
+    }
+    function escapeHtml(s) {
+      return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function formatDate(d) {
+      try {
+        return new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      } catch (e) { return d; }
+    }
+
+    // Render Master
+    async function render() {
+      const v = document.getElementById('main-viewport');
+      updateNavUI();
+      if (state.screen === 'splash') v.innerHTML = renderSplash();
+      else if (state.screen === 'namePrompt') v.innerHTML = renderNamePrompt();
+      else if (state.activeTab === 'beranda') v.innerHTML = renderBeranda();
+      else if (state.activeTab === 'mulai') v.innerHTML = renderMulai();
+      else if (state.activeTab === 'sos') v.innerHTML = await renderSosDeadline();
+      else if (state.activeTab === 'jejak') v.innerHTML = renderJejak();
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      await syncTasks();
+      await syncStats();
+      render();
+    });
+  </script>
+</body>
+</html>
