@@ -9,10 +9,9 @@
 
 Kebanyakan aplikasi *to-do list* justru menimbulkan rasa cemas (*productivity guilt*) karena menampilkan daftar tugas yang menumpuk. MULA hadir dengan pendekatan berbeda:
 
-1. **Zero-Friction (Guest-First Onboarding):** Tidak ada *login wall* atau formulir registrasi yang rumit di awal. Pengguna yang sedang kewalahan bisa langsung memulai tugas dalam hitungan detik.
-2. **Empathy-Driven Productivity:** Sapaan dan rekomendasi tindakan disesuaikan dengan kondisi mental pengguna (*Bingung, Kewalahan, Lelah, Takut*).
-3. **AI Task Deconstruction:** Menggunakan **Google Gemini AI** untuk memecah tugas kuliah besar menjadi 4–5 langkah mikro, di mana langkah pertama selalu berupa aksi super mudah berdurasi 2 menit.
-4. **SOS Deadline:** Otomatis menyusun prioritas realistis dan batas waktu belajar malam ketika tugas menumpuk tanpa memaksa semua harus selesai sekaligus.
+1. **Empathy-Driven Productivity:** Sapaan dan rekomendasi tindakan disesuaikan dengan kondisi mental pengguna (*Bingung, Kewalahan, Lelah, Takut*).
+2. **AI Task Deconstruction:** Menggunakan **Google Gemini AI** untuk memecah tugas kuliah besar menjadi 4–5 langkah mikro, di mana langkah pertama selalu berupa aksi super mudah berdurasi 2 menit.
+3. **SOS Deadline:** Otomatis menyusun prioritas realistis dan batas waktu belajar malam ketika tugas menumpuk tanpa memaksa semua harus selesai sekaligus.
 
 ---
 
