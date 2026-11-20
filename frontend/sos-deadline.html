@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — SOS Deadline & Jadwal</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24">
+    
+    <!-- Top Olive Header Banner -->
+    <header class="mula-header flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="home.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali ke Beranda">
+          <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="text-xl font-bold">SOS Deadline</h1>
+          <p class="text-xs">Rencana realistis tanpa panik.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Flow -->
+    <main class="p-5 flex flex-col gap-4">
+      
+      <!-- STEP 1: PILIH TUGAS -->
+      <section id="step1Tasks" class="flex flex-col gap-3">
+        <p class="text-xs text-[#404943] leading-relaxed">
+          Tugas menumpuk? Pilih tugas yang mau kita susunkan jadwal realistisnya.
+        </p>
+
+        <!-- Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
+          <button class="bg-[#31572C] text-white text-[11px] font-bold px-3 py-1 rounded-full">Semua</button>
+          <button class="bg-[#FEFEFE] text-[#132A13] border border-[#7A8782]/30 text-[11px] font-semibold px-3 py-1 rounded-full">Mendekati 48 Jam</button>
+          <button class="bg-[#FEFEFE] text-[#132A13] border border-[#7A8782]/30 text-[11px] font-semibold px-3 py-1 rounded-full">Prioritas</button>
+        </div>
+
+        <!-- Task Checklist -->
+        <div class="flex flex-col gap-2.5">
+          
+          <label class="card-white flex items-start gap-3 cursor-pointer p-3.5 border border-[#31572C]/20">
+            <input type="checkbox" checked id="chkTask1" class="w-4 h-4 mt-0.5 accent-[#31572C] rounded"/>
+            <div class="flex flex-col">
+              <span class="text-xs font-bold text-[#132A13]">Laporan praktikum Sistem Informasi</span>
+              <span class="text-[11px] text-[#795238]">Sisa 1 hari 11 jam • Estimasi kerja 1 jam 15 menit</span>
+            </div>
+          </label>
+
+          <label class="card-white flex items-start gap-3 cursor-pointer p-3.5 border border-[#31572C]/20">
+            <input type="checkbox" checked id="chkTask2" class="w-4 h-4 mt-0.5 accent-[#31572C] rounded"/>
+            <div class="flex flex-col">
+              <span class="text-xs font-bold text-[#132A13]">Presentasi Kelompok</span>
+              <span class="text-[11px] text-[#795238]">Sisa 2 hari 05 jam • Estimasi kerja 1 jam 30 menit</span>
+            </div>
+          </label>
+
+          <label class="card-white flex items-start gap-3 cursor-pointer p-3.5 border border-black/5">
+            <input type="checkbox" id="chkTask3" class="w-4 h-4 mt-0.5 accent-[#31572C] rounded"/>
+            <div class="flex flex-col">
+              <span class="text-xs font-bold text-[#132A13]">Urusan Akademik & KRS</span>
+              <span class="text-[11px] text-[#7A8782]">Sisa 4 hari • Estimasi kerja 30 menit</span>
+            </div>
+          </label>
+
+        </div>
+
+        <button onclick="goToStep2Time()" class="btn-primary py-3 text-xs mt-2 shadow-md">
+          Lanjut: Atur Waktu Tersedia
+        </button>
+      </section>
+
+      <!-- STEP 2: WAKTU YANG KAMU PUNYA -->
+      <section id="step2Time" class="flex flex-col gap-3.5 hidden">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-[#132A13]">Waktu yang kamu punya</h2>
+          <button onclick="backToStep1()" class="text-xs text-[#31572C] font-semibold hover:underline">Ubah Tugas</button>
+        </div>
+
+        <div class="card-white p-4 flex flex-col gap-3">
+          <span class="text-[11px] font-bold text-[#795238] uppercase tracking-wider">Jam Tersedia Hari Ini</span>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <label class="text-[11px] text-[#7A8782]">Mulai jam:</label>
+              <input type="time" id="timeStart" value="19:00" class="mula-input text-xs"/>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-[11px] text-[#7A8782]">Selesai jam:</label>
+              <input type="time" id="timeEnd" value="22:00" class="mula-input text-xs"/>
+            </div>
+          </div>
+
+          <label class="flex items-center gap-2.5 pt-2 border-t border-black/5 cursor-pointer">
+            <input type="checkbox" id="autoBreak" checked class="w-4 h-4 accent-[#31572C] rounded"/>
+            <span class="text-xs text-[#132A13] font-medium">Istirahat otomatis (10 menit tiap 50 menit kerja)</span>
+          </label>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="generateSchedule(false)" class="btn-primary py-3 text-xs flex-1">
+            Susun Jadwal Realistis
+          </button>
+          <button onclick="generateSchedule(true)" class="btn-secondary py-3 text-xs w-36 bg-white text-[#ba1a1a] border-red-200" title="Simulasikan jika waktu tidak mencukupi">
+            Uji Overload
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 3A: HASIL JADWAL REALISTIS -->
+      <section id="step3Schedule" class="flex flex-col gap-3 hidden">
+        <div class="card-yellow p-3 text-xs font-semibold text-[#132A13] flex items-center gap-2">
+          <span>☕</span>
+          <span>Rencana realistis sudah termasuk waktu istirahat bernapas.</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          
+          <!-- Block 1 -->
+          <div class="card-white p-3.5 flex flex-col gap-1 border-l-4 border-l-[#31572C]">
+            <span class="text-xs font-bold text-[#31572C]">19.00 – 19.50 (50 menit)</span>
+            <span class="text-xs font-bold text-[#132A13]">Laporan praktikum — pendahuluan & metode</span>
+          </div>
+
+          <!-- Break 1 -->
+          <div class="bg-[#AEF1CC]/40 p-2.5 rounded-xl flex items-center justify-between text-xs text-[#31572C] font-semibold px-3">
+            <span>☕ 19.50 – 20.00</span>
+            <span>Istirahat 10 menit</span>
+          </div>
+
+          <!-- Block 2 -->
+          <div class="card-white p-3.5 flex flex-col gap-1 border-l-4 border-l-[#90A955]">
+            <span class="text-xs font-bold text-[#90A955]">20.00 – 20.50 (50 menit)</span>
+            <span class="text-xs font-bold text-[#132A13]">Presentasi kelompok — susun slide utama</span>
+          </div>
+
+          <!-- Break 2 -->
+          <div class="bg-[#AEF1CC]/40 p-2.5 rounded-xl flex items-center justify-between text-xs text-[#31572C] font-semibold px-3">
+            <span>☕ 20.50 – 21.00</span>
+            <span>Istirahat 10 menit</span>
+          </div>
+
+          <!-- Block 3 -->
+          <div class="card-white p-3.5 flex flex-col gap-1 border-l-4 border-l-[#31572C]">
+            <span class="text-xs font-bold text-[#31572C]">21.00 – 21.30 (30 menit)</span>
+            <span class="text-xs font-bold text-[#132A13]">Laporan praktikum — tabel hasil & pembahasan</span>
+          </div>
+
+        </div>
+
+        <a href="mulai-timer.html?task=Sesi+SOS+Blok+1" class="btn-primary py-3 text-xs mt-2">
+          Mulai Blok Pertama Sekarang
+        </a>
+      </section>
+
+      <!-- STEP 3B: OVERLOAD WARNING (Waktunya belum cukup) -->
+      <section id="step3Overload" class="flex flex-col gap-3.5 hidden">
+        <div class="card-peach flex flex-col items-center text-center p-5 gap-2 border border-red-200">
+          <div class="w-16 h-16">
+            <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+              <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+              <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+              <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+              <circle cx="43" cy="54" r="3" fill="#132A13"/>
+              <circle cx="57" cy="54" r="3" fill="#132A13"/>
+              <path d="M47 64C48.5 62 51.5 62 53 64" stroke="#132A13" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="text-sm font-bold text-[#132A13]">Waktunya belum cukup untuk semuanya</h3>
+          <p class="text-xs text-[#795238] leading-relaxed">
+            Total beban sekitar 4 jam, sementara waktu yang tersedia hanya 2 jam 30 menit sebelum deadline. Kamu tidak berkurang nilainya saat lelah.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <button onclick="openLecturerDraft()" class="btn-primary py-3 text-xs shadow-md">
+            Buat Draf Pesan ke Dosen
+          </button>
+          <button onclick="backToStep1()" class="btn-secondary py-2.5 text-xs bg-white">
+            Pilih Ulang Tugas
+          </button>
+          <a href="napas.html" class="btn-secondary py-2.5 text-xs bg-white flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px] text-[#31572C]">air</span>
+            <span>Napas 1 Menit</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- STEP 4: DRAF PESAN KE DOSEN -->
+      <section id="step4Draft" class="flex flex-col gap-3 hidden">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-[#132A13]">Draf Pesan ke Dosen</h2>
+          <button onclick="backToOverload()" class="text-xs text-[#31572C] font-semibold hover:underline">Kembali</button>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <input type="text" id="docLecturer" value="Bapak Dr. Hendra, M.Kom" placeholder="Nama Dosen" class="mula-input text-xs"/>
+          <input type="text" id="docSubject" value="Praktikum Sistem Informasi" placeholder="Mata Kuliah" class="mula-input text-xs"/>
+          <input type="text" id="docProposedDate" value="Senin, 30 November 2026 pukul 12.00" placeholder="Tanggal Usulan Pengumpulan" class="mula-input text-xs"/>
+        </div>
+
+        <div class="flex flex-col gap-1.5 mt-1">
+          <label class="text-[11px] font-bold text-[#795238]">Pesan Sopan yang Dihasilkan:</label>
+          <textarea id="lecturerMessageText" rows="6" class="w-full bg-[#FEFEFE] border border-[#31572C]/20 rounded-xl p-3 text-xs text-[#132A13] leading-relaxed font-sans outline-none focus:border-[#31572C]"></textarea>
+        </div>
+
+        <button onclick="copyDraftMessage()" class="btn-primary py-3 text-xs shadow-md">
+          <span class="material-symbols-outlined text-[18px]">content_copy</span>
+          <span>Salin Pesan ke Clipboard</span>
+        </button>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item active">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    function goToStep2Time() {
+      document.getElementById('step1Tasks').classList.add('hidden');
+      document.getElementById('step2Time').classList.remove('hidden');
+    }
+
+    function backToStep1() {
+      document.getElementById('step2Time').classList.add('hidden');
+      document.getElementById('step3Schedule').classList.add('hidden');
+      document.getElementById('step3Overload').classList.add('hidden');
+      document.getElementById('step4Draft').classList.add('hidden');
+      document.getElementById('step1Tasks').classList.remove('hidden');
+    }
+
+    function generateSchedule(isOverload) {
+      document.getElementById('step2Time').classList.add('hidden');
+      if (isOverload) {
+        document.getElementById('step3Overload').classList.remove('hidden');
+      } else {
+        document.getElementById('step3Schedule').classList.remove('hidden');
+      }
+    }
+
+    function openLecturerDraft() {
+      document.getElementById('step3Overload').classList.add('hidden');
+      document.getElementById('step4Draft').classList.remove('hidden');
+
+      const user = localStorage.getItem('mula_user') || 'Niki';
+      const lecturer = document.getElementById('docLecturer').value;
+      const subject = document.getElementById('docSubject').value;
+      const date = document.getElementById('docProposedDate').value;
+
+      const template = `Selamat malam, ${lecturer}. Mohon maaf mengganggu waktu Bapak/Ibu.
+
+Saya ${user}, mahasiswa pada kelas ${subject}. Saat ini saya sedang menyelesaikan beberapa tugas akademik dengan tenggat yang berdekatan, sehingga saya khawatir laporan praktikum belum dapat selesai secara optimal pada tenggat saat ini.
+
+Apakah memungkinkan jikalau saya mengumpulkannya pada ${date}? Saya berjanji akan menyelesaikannya dengan sebaik mungkin.
+
+Terima kasih banyak atas pengertian dan bimbingan Bapak/Ibu. Hormat saya,
+${user}`;
+
+      document.getElementById('lecturerMessageText').value = template;
+    }
+
+    function backToOverload() {
+      document.getElementById('step4Draft').classList.add('hidden');
+      document.getElementById('step3Overload').classList.remove('hidden');
+    }
+
+    function copyDraftMessage() {
+      const txt = document.getElementById('lecturerMessageText');
+      txt.select();
+      navigator.clipboard.writeText(txt.value);
+      alert('Draf pesan berhasil disalin ke clipboard!');
+    }
+  </script>
+</body>
+</html>

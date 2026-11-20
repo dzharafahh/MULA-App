@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Little Steps, Lighter Days</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .soil-mound {
+      background: radial-gradient(ellipse 140% 100% at 50% 100%, #6E4327 0%, #7B4B2F 45%, #8D5B3C 80%, #9B6543 100%);
+      border-top-left-radius: 50% 120px;
+      border-top-right-radius: 50% 120px;
+    }
+    .play-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: #31572C;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(49, 87, 44, 0.35);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .play-btn:hover {
+      transform: scale(1.08);
+      background-color: #264622;
+    }
+    .play-btn:active {
+      transform: scale(0.95);
+    }
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-top: 13px solid transparent;
+      border-bottom: 13px solid transparent;
+      border-left: 22px solid #FFFFFF;
+      margin-left: 5px;
+    }
+    .tunny-bubble {
+      background: #31572C;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 12px;
+      position: absolute;
+      top: -12px;
+      right: -24px;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(19, 42, 19, 0.2);
+    }
+    .pebble {
+      position: absolute;
+      background: #C49A6C;
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell justify-between relative overflow-hidden" onclick="goToOnboarding()">
+    
+    <!-- Top Area: Logo & Brand -->
+    <div class="flex flex-col items-center pt-16 z-10">
+      <div class="flex items-center justify-center gap-1">
+        <h1 class="text-5xl font-extrabold tracking-tight text-[#31572C]" style="font-family: 'Plus Jakarta Sans', sans-serif;">mùla</h1>
+      </div>
+      <p class="text-[15px] font-semibold text-[#31572C] tracking-wide mt-2">Little Steps, Lighter Days</p>
+    </div>
+
+    <!-- Center Area: Play Button -->
+    <div class="flex flex-col items-center justify-center z-10 my-auto">
+      <div class="play-btn" id="playBtn" title="Mulai MULA">
+        <div class="play-icon"></div>
+      </div>
+      <p class="text-xs text-[#7A8782] font-medium mt-4 tracking-wider uppercase">Ketuk untuk mulai</p>
+    </div>
+
+    <!-- Bottom Area: Earth Mound & Mascot Tunny -->
+    <div class="soil-mound w-full h-[320px] relative flex flex-col items-center justify-start pt-4 z-10 shadow-inner">
+      
+      <!-- Tunny Mascot Container -->
+      <div class="relative -top-16 flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105">
+        <div class="tunny-bubble animate-bounce">
+          Halo! Aku Tunny 🌱
+        </div>
+        <!-- Tunny Sprout Vector Illustration -->
+        <svg width="110" height="110" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Two Little Sprout Leaves -->
+          <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+          <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+          <path d="M50 25V33" stroke="#5E7035" stroke-width="3" stroke-linecap="round"/>
+          
+          <!-- Cute Head / Body -->
+          <ellipse cx="50" cy="58" rx="26" ry="24" fill="#E8D5B5"/>
+          <ellipse cx="50" cy="59" rx="25" ry="23" fill="#F4E6D0"/>
+          
+          <!-- Waving Hand -->
+          <ellipse cx="74" cy="52" rx="6" ry="7" transform="rotate(30 74 52)" fill="#E8D5B5"/>
+          <ellipse cx="26" cy="60" rx="5" ry="6" fill="#E8D5B5"/>
+          
+          <!-- Happy Eyes -->
+          <circle cx="43" cy="54" r="3" fill="#132A13"/>
+          <circle cx="57" cy="54" r="3" fill="#132A13"/>
+          <circle cx="44" cy="53" r="1" fill="#FFFFFF"/>
+          <circle cx="58" cy="53" r="1" fill="#FFFFFF"/>
+          
+          <!-- Blushing Cheeks -->
+          <ellipse cx="38" cy="59" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+          <ellipse cx="62" cy="59" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+          
+          <!-- Little Smile -->
+          <path d="M47 62C48.5 64 51.5 64 53 62" stroke="#132A13" stroke-width="2" stroke-linecap="round"/>
+          
+          <!-- Feet -->
+          <ellipse cx="43" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+          <ellipse cx="57" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+        </svg>
+      </div>
+
+      <!-- Soil Details / Pebbles & Sprouts -->
+      <div class="pebble w-3 h-2 top-28 left-16"></div>
+      <div class="pebble w-4 h-2.5 top-36 right-20"></div>
+      <div class="pebble w-2 h-1.5 top-48 left-32"></div>
+      <div class="pebble w-3.5 h-2 top-52 right-36"></div>
+      <div class="pebble w-2.5 h-2 top-60 left-20"></div>
+
+      <!-- Little Sprouts on Soil -->
+      <div class="absolute bottom-6 flex items-center justify-center gap-12 w-full opacity-60">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 20V12M12 12C12 8 8 7 6 9C5 11 8 13 12 12ZM12 12C12 8 16 7 18 9C19 11 16 13 12 12Z" stroke="#AEF1CC" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 20V14M12 14C12 10 9 9 7 11C6 13 9 14 12 14ZM12 14C12 10 15 9 17 11C18 13 15 14 12 14Z" stroke="#90A955" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 20V13M12 13C12 9 8 8 6 10C5 12 8 13 12 13ZM12 13C12 9 16 8 18 10C19 12 16 13 12 13Z" stroke="#AEF1CC" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function goToOnboarding() {
+      // If user is already logged in, go directly to home.html
+      const user = localStorage.getItem('mula_user');
+      if (user) {
+        window.location.href = 'home.html';
+      } else {
+        window.location.href = 'onboarding.html';
+      }
+    }
+
+    // Auto navigate after 3.5s if user doesn't tap
+    setTimeout(() => {
+      goToOnboarding();
+    }, 3500);
+  </script>
+</body>
+</html>

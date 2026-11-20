@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Napas 1 Menit</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .breath-bubble {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #AEF1CC 0%, #90A955 80%, #31572C 100%);
+      box-shadow: 0 0 40px rgba(144, 169, 85, 0.4);
+      transition: transform 4s ease-in-out, opacity 4s ease-in-out;
+    }
+    .breath-bubble.inhale {
+      transform: scale(1.65);
+      opacity: 0.95;
+    }
+    .breath-bubble.hold {
+      transform: scale(1.65);
+      opacity: 0.85;
+    }
+    .breath-bubble.exhale {
+      transform: scale(1.0);
+      opacity: 0.65;
+    }
+  </style>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24 justify-between">
+    
+    <div>
+      <!-- Top Olive Header Banner -->
+      <header class="mula-header flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <button onclick="window.history.back()" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali">
+            <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+          </button>
+          <div>
+            <h1 class="text-xl font-bold">Napas 1 Menit</h1>
+            <p class="text-xs">Beri jeda sejenak untuk menenangkan sistem saraf.</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Visual Area -->
+      <main class="p-6 flex flex-col items-center text-center">
+        
+        <!-- Cycle Badge -->
+        <span class="bg-[#FEFEFE] text-[#31572C] text-xs font-bold px-3 py-1 rounded-full border border-black/5 shadow-sm mb-8" id="cycleBadge">
+          Siklus 1 dari 5
+        </span>
+
+        <!-- Breathing Bubble Area -->
+        <div class="w-64 h-64 flex items-center justify-center my-6 relative">
+          <div class="absolute w-72 h-72 rounded-full border border-[#90A955]/30"></div>
+          <div id="breathBubble" class="breath-bubble flex items-center justify-center">
+            <span class="text-xs font-extrabold text-white uppercase tracking-wider drop-shadow" id="breathInstruction">
+              Tarik Napas
+            </span>
+          </div>
+        </div>
+
+        <!-- Instruction Subtitle -->
+        <h2 class="text-lg font-bold text-[#132A13] mt-6" id="instructionTitle">
+          Tarik napas perlahan...
+        </h2>
+        <p class="text-xs text-[#7A8782] mt-1" id="secondsLeft">
+          4 detik
+        </p>
+
+      </main>
+    </div>
+
+    <!-- Bottom Controls Area -->
+    <div class="p-6 flex flex-col gap-2.5">
+      <button onclick="finishBreathing()" class="btn-primary py-3.5 shadow-md">
+        Selesai & Kembali
+      </button>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    let cycle = 1;
+    const maxCycles = 5;
+    const phases = [
+      { name: 'Tarik Napas', title: 'Tarik napas perlahan...', class: 'inhale', duration: 4 },
+      { name: 'Tahan', title: 'Tahan napas dengan tenang...', class: 'hold', duration: 4 },
+      { name: 'Hembuskan', title: 'Hembuskan perlahan lewat mulut...', class: 'exhale', duration: 4 }
+    ];
+
+    let currentPhase = 0;
+    let phaseTimeLeft = 4;
+    let breathInterval = null;
+
+    const bubble = document.getElementById('breathBubble');
+    const instruction = document.getElementById('breathInstruction');
+    const title = document.getElementById('instructionTitle');
+    const secondsEl = document.getElementById('secondsLeft');
+    const cycleBadge = document.getElementById('cycleBadge');
+
+    function applyPhase() {
+      const p = phases[currentPhase];
+      bubble.className = `breath-bubble ${p.class}`;
+      instruction.textContent = p.name;
+      title.textContent = p.title;
+      phaseTimeLeft = p.duration;
+      secondsEl.textContent = `${phaseTimeLeft} detik`;
+    }
+
+    function runBreathing() {
+      applyPhase();
+      breathInterval = setInterval(() => {
+        phaseTimeLeft--;
+        secondsEl.textContent = `${phaseTimeLeft} detik`;
+        
+        if (phaseTimeLeft <= 0) {
+          currentPhase = (currentPhase + 1) % phases.length;
+          if (currentPhase === 0) {
+            cycle++;
+            if (cycle > maxCycles) {
+              clearInterval(breathInterval);
+              finishBreathing();
+              return;
+            }
+            cycleBadge.textContent = `Siklus ${cycle} dari ${maxCycles}`;
+          }
+          applyPhase();
+        }
+      }, 1000);
+    }
+
+    function finishBreathing() {
+      clearInterval(breathInterval);
+      window.location.href = 'home.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      runBreathing();
+    });
+  </script>
+</body>
+</html>

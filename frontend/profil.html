@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Profil & Bantuan</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24">
+    
+    <!-- Top Olive Header Banner -->
+    <header class="mula-header flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="home.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali ke Beranda">
+          <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="text-xl font-bold">Profil & Bantuan</h1>
+          <p class="text-xs">Ruang personal dan jejaring dukunganmu.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-5 flex flex-col gap-4">
+      
+      <!-- Student Card -->
+      <div class="card-white p-4 flex items-center gap-3.5 border border-[#31572C]/10 shadow-sm">
+        <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-[#31572C] flex-shrink-0 bg-white/20">
+          <img src="assets/avatar.png" alt="Avatar" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'" class="w-full h-full object-cover"/>
+        </div>
+        <div class="flex flex-col">
+          <h2 class="text-base font-bold text-[#132A13]" id="profileName">Niki</h2>
+          <span class="text-xs text-[#7A8782]" id="profileDegree">Mahasiswa S1 • Ilmu Komputer</span>
+          <span class="text-[11px] text-[#31572C] font-semibold mt-0.5" id="profileStudyTime">Jam belajar: 19.00 - 22.00</span>
+        </div>
+      </div>
+
+      <!-- Settings Section -->
+      <div class="flex flex-col gap-2">
+        <h3 class="text-xs font-bold text-[#132A13] uppercase tracking-wider">Pengaturan Pribadi</h3>
+        
+        <div class="card-white p-3.5 flex flex-col gap-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-[#404943] font-medium">Ubah Nama Panggilan</span>
+            <button onclick="editName()" class="font-bold text-[#31572C] hover:underline">Ubah</button>
+          </div>
+          <div class="flex items-center justify-between text-xs pt-2 border-t border-black/5">
+            <span class="text-[#404943] font-medium">Jenjang Kuliah</span>
+            <span class="font-bold text-[#132A13]" id="degreeLabel">S1</span>
+          </div>
+          <div class="flex items-center justify-between text-xs pt-2 border-t border-black/5">
+            <span class="text-[#404943] font-medium">Notifikasi Ramah (Tanpa Rasa Bersalah)</span>
+            <input type="checkbox" checked class="w-4 h-4 accent-[#31572C] rounded"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bantuan & Layanan Konseling Kampus Section -->
+      <div class="flex flex-col gap-2 mt-1" id="bantuan">
+        <h3 class="text-xs font-bold text-[#132A13] uppercase tracking-wider">Bantuan & Layanan Kampus</h3>
+        
+        <div class="card-peach p-4 flex flex-col gap-2.5 border border-[#795238]/20">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#795238] text-[20px]">support_agent</span>
+            <h4 class="text-xs font-bold text-[#132A13]">Unit Bimbingan & Konseling Kampus</h4>
+          </div>
+          <p class="text-xs text-[#404943] leading-relaxed">
+            Jika beban akademik atau emosional terasa terlalu berat untuk ditanggung sendiri, kamu berhak meminta bantuan profesional.
+          </p>
+          <div class="flex flex-col gap-1.5 pt-2 border-t border-[#795238]/10 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-[#795238] font-semibold">UPT Konseling Mahasiswa:</span>
+              <a href="tel:081234567890" class="font-bold text-[#31572C] underline">0812-3456-7890</a>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-[#795238] font-semibold">Hotline Kesehatan Jiwa (Kemenkes):</span>
+              <a href="tel:119" class="font-bold text-[#31572C] underline">119 ext. 8</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kelola Akun & Progres -->
+      <div class="flex flex-col gap-2 mt-1">
+        <h3 class="text-xs font-bold text-[#132A13] uppercase tracking-wider">Kelola Akun & Data</h3>
+        
+        <div class="card-white p-3 flex flex-col gap-2">
+          <button onclick="clearTestData()" class="text-left text-xs font-semibold text-[#7A8782] py-1.5 hover:text-black transition">
+            Bersihkan Riwayat Sesi Uji Coba
+          </button>
+          <button onclick="handleLogout()" class="text-left text-xs font-bold text-[#ba1a1a] py-1.5 border-t border-black/5 hover:opacity-80 transition">
+            Keluar dari Akun
+          </button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = localStorage.getItem('mula_user') || 'Niki';
+      const degree = localStorage.getItem('mula_degree') || 'S1';
+      const studyHour = localStorage.getItem('mula_study_hour') || '19.00 - 22.00';
+
+      document.getElementById('profileName').textContent = user;
+      document.getElementById('profileDegree').textContent = `Mahasiswa ${degree} • Belajar Mindful`;
+      document.getElementById('degreeLabel').textContent = degree;
+      document.getElementById('profileStudyTime').textContent = `Jam belajar: ${studyHour}`;
+    });
+
+    function editName() {
+      const current = localStorage.getItem('mula_user') || 'Niki';
+      const newName = prompt('Masukkan nama panggilan baru:', current);
+      if (newName && newName.trim()) {
+        localStorage.setItem('mula_user', newName.trim());
+        document.getElementById('profileName').textContent = newName.trim();
+      }
+    }
+
+    function clearTestData() {
+      if (confirm('Bersihkan riwayat sesi uji coba di perangkat ini?')) {
+        localStorage.removeItem('mula_activity_logs');
+        localStorage.removeItem('mula_energy_logs');
+        alert('Data riwayat berhasil dibersihkan.');
+        window.location.reload();
+      }
+    }
+
+    function handleLogout() {
+      if (confirm('Keluar dari akun?')) {
+        localStorage.removeItem('mula_user');
+        localStorage.removeItem('mula_email');
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+</body>
+</html>

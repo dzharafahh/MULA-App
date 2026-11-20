@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Daftar Akun</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell justify-between p-6">
+    
+    <!-- STEP 1: REGISTER FORM -->
+    <div id="stepRegister" class="flex flex-col w-full pt-4">
+      
+      <!-- Brand Logo Minimal -->
+      <div class="flex items-center gap-2 mb-6">
+        <span class="text-2xl font-extrabold text-[#31572C]">mùla</span>
+      </div>
+
+      <!-- Welcome Heading -->
+      <h1 class="text-2xl font-bold text-[#132A13] mb-2 tracking-tight">Mulai Untuk Langkah Baru!</h1>
+      <p class="text-sm text-[#404943] leading-relaxed mb-6">
+        Buat akun untuk menyimpan Jejak Langkahmu, atau jelajahi dulu tanpa akun.
+      </p>
+
+      <!-- Form -->
+      <form onsubmit="handleRegister(event)" class="flex flex-col gap-3.5">
+        
+        <!-- Name Input -->
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-semibold text-[#132A13] px-1">Nama</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-[#7A8782] text-[20px]">person</span>
+            <input type="text" id="regName" required placeholder="Nama panggilanmu" class="mula-input pl-11 text-sm"/>
+          </div>
+        </div>
+
+        <!-- Email Input -->
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-semibold text-[#132A13] px-1">Email</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-[#7A8782] text-[20px]">mail</span>
+            <input type="email" id="regEmail" required placeholder="nama@gmail.com" class="mula-input pl-11 text-sm"/>
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-semibold text-[#132A13] px-1">Kata Sandi</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-[#7A8782] text-[20px]">lock</span>
+            <input type="password" id="regPassword" required placeholder="••••••••" class="mula-input pl-11 pr-11 text-sm"/>
+            <button type="button" onclick="togglePassReg()" class="absolute right-3.5 text-[#7A8782] hover:text-[#132A13] flex items-center">
+              <span class="material-symbols-outlined text-[20px]" id="eyeIconReg">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-primary mt-2">
+          Buat Akun
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-3 my-4">
+        <div class="flex-1 h-[1px] bg-black/10"></div>
+        <span class="text-xs text-[#7A8782]">atau</span>
+        <div class="flex-1 h-[1px] bg-black/10"></div>
+      </div>
+
+      <!-- Alternative Auth -->
+      <div class="flex flex-col gap-2.5">
+        <button type="button" onclick="continueGoogle()" class="btn-secondary gap-3 bg-[#FEFEFE] hover:bg-[#F2EEE1] transition">
+          <svg class="w-4 h-4" viewBox="0 0 24 24">
+            <path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" fill="#4285F4"></path>
+            <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z" fill="#34A853"></path>
+            <path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.94 0 12s.45 3.84 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
+            <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
+          </svg>
+          <span class="text-sm font-semibold">Lanjutkan dengan Google</span>
+        </button>
+
+        <button type="button" onclick="continueGuest()" class="btn-secondary bg-[#FEFEFE] hover:bg-[#F2EEE1] transition">
+          <span class="material-symbols-outlined text-[18px] text-[#31572C]">eco</span>
+          <span class="text-sm font-semibold">Lanjut Tanpa Akun</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col items-center gap-2 pt-6 pb-2 text-center mt-auto">
+        <div class="text-sm text-[#404943]">
+          Sudah punya akun? <a href="login.html" class="font-bold text-[#31572C] hover:underline">Masuk</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- STEP 2: KENALAN DULU YUK -->
+    <div id="stepKenalan" class="flex flex-col w-full hidden -m-6 min-h-screen justify-between">
+      
+      <!-- Top Olive Banner -->
+      <div class="mula-header flex items-center gap-3">
+        <button onclick="backToRegister()" class="p-1 rounded-full hover:bg-black/10">
+          <span class="material-symbols-outlined text-[22px]">arrow_back</span>
+        </button>
+        <div>
+          <h1 class="text-lg font-bold">Kenalan dulu yuk</h1>
+          <p class="text-xs">Biar MULA bisa menjaga dengan pas.</p>
+        </div>
+      </div>
+
+      <!-- Questionnaire Content -->
+      <div class="p-6 flex flex-col gap-5 flex-1">
+        
+        <!-- Question 1 -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-[#132A13]">Mau dipanggil apa?</label>
+          <input type="text" id="prefNickname" placeholder="Nama panggilan" class="mula-input text-sm"/>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-[#132A13]">Kamu kuliah di jenjang:</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="selectDegree('S1')" id="btnS1" class="py-2.5 rounded-xl border border-[#31572C]/20 bg-[#FEFEFE] text-sm font-semibold hover:border-[#31572C] active:bg-[#31572C] active:text-white transition">S1</button>
+            <button type="button" onclick="selectDegree('D3')" id="btnD3" class="py-2.5 rounded-xl border border-[#31572C]/20 bg-[#FEFEFE] text-sm font-semibold hover:border-[#31572C] active:bg-[#31572C] active:text-white transition">D3</button>
+            <button type="button" onclick="selectDegree('D4')" id="btnD4" class="py-2.5 rounded-xl border border-[#31572C]/20 bg-[#FEFEFE] text-sm font-semibold hover:border-[#31572C] active:bg-[#31572C] active:text-white transition">D4</button>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-[#132A13]">Biasanya kamu nyaman belajar jam berapa?</label>
+          <input type="text" id="prefStudyHour" placeholder="Contoh: 19.00 - 21.00" class="mula-input text-sm"/>
+        </div>
+
+        <!-- Tunny Greeting Card -->
+        <div class="card-yellow flex items-center gap-3 mt-2">
+          <div class="w-12 h-12 flex-shrink-0">
+            <svg width="48" height="48" viewBox="0 0 100 100" fill="none">
+              <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+              <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+              <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+              <circle cx="43" cy="54" r="3" fill="#132A13"/>
+              <circle cx="57" cy="54" r="3" fill="#132A13"/>
+              <path d="M47 62C48.5 64 51.5 64 53 62" stroke="#132A13" stroke-width="2" stroke-linecap="round"/>
+              <ellipse cx="38" cy="59" rx="4" ry="2.5" fill="#FFAAA6"/>
+              <ellipse cx="62" cy="59" rx="4" ry="2.5" fill="#FFAAA6"/>
+            </svg>
+          </div>
+          <p class="text-xs font-semibold text-[#132A13]" id="tunnyGreeting">
+            Senang kenalan sama kamu! Semoga harimu lebih ringan bersama MULA.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Bottom Actions -->
+      <div class="p-6 flex flex-col gap-2">
+        <button onclick="finishKenalan()" class="btn-primary">
+          Lanjut
+        </button>
+        <button onclick="finishKenalan()" class="text-xs text-center text-[#7A8782] py-2 hover:underline">
+          Lewati dulu
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    let selectedDegreeValue = 'S1';
+
+    function togglePassReg() {
+      const p = document.getElementById('regPassword');
+      const icon = document.getElementById('eyeIconReg');
+      if (p.type === 'password') {
+        p.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        p.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value;
+      const email = document.getElementById('regEmail').value;
+      localStorage.setItem('mula_user', name);
+      localStorage.setItem('mula_email', email);
+
+      // Show Kenalan step
+      document.getElementById('stepRegister').classList.add('hidden');
+      document.getElementById('stepKenalan').classList.remove('hidden');
+      document.getElementById('prefNickname').value = name;
+      document.getElementById('tunnyGreeting').textContent = `Senang kenalan sama kamu, ${name}!`;
+    }
+
+    function backToRegister() {
+      document.getElementById('stepKenalan').classList.add('hidden');
+      document.getElementById('stepRegister').classList.remove('hidden');
+    }
+
+    function selectDegree(deg) {
+      selectedDegreeValue = deg;
+      ['S1', 'D3', 'D4'].forEach(d => {
+        const btn = document.getElementById(`btn${d}`);
+        if (d === deg) {
+          btn.style.backgroundColor = '#31572C';
+          btn.style.color = '#FFFFFF';
+        } else {
+          btn.style.backgroundColor = '#FEFEFE';
+          btn.style.color = '#132A13';
+        }
+      });
+    }
+
+    function finishKenalan() {
+      const nick = document.getElementById('prefNickname').value;
+      if (nick) localStorage.setItem('mula_user', nick);
+      localStorage.setItem('mula_degree', selectedDegreeValue);
+      localStorage.setItem('mula_study_hour', document.getElementById('prefStudyHour').value || '19.00');
+      window.location.href = 'home.html';
+    }
+
+    function continueGoogle() {
+      localStorage.setItem('mula_user', 'Niki');
+      localStorage.setItem('mula_email', 'niki@gmail.com');
+      window.location.href = 'home.html';
+    }
+
+    function continueGuest() {
+      localStorage.setItem('mula_user', 'Kawan MULA');
+      window.location.href = 'home.html';
+    }
+
+    // Default S1 selected
+    selectDegree('S1');
+  </script>
+</body>
+</html>

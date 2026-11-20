@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Jejak Langkah & Refleksi</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24">
+    
+    <!-- Top Olive Header Banner -->
+    <header class="mula-header flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="home.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali ke Beranda">
+          <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="text-xl font-bold">Jejak Langkah</h1>
+          <p class="text-xs">Ringkasan tanpa rasa bersalah.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-5 flex flex-col gap-4">
+      
+      <!-- Stat Highlights (3 columns) -->
+      <div class="grid grid-cols-3 gap-2.5">
+        
+        <div class="card-white p-3 flex flex-col items-center text-center">
+          <span class="text-xl font-extrabold text-[#31572C]" id="statSessions">12</span>
+          <span class="text-[10px] font-bold text-[#7A8782] uppercase mt-0.5">Sesi Selesai</span>
+        </div>
+
+        <div class="card-white p-3 flex flex-col items-center text-center">
+          <span class="text-xl font-extrabold text-[#31572C]" id="statMinutes">24</span>
+          <span class="text-[10px] font-bold text-[#7A8782] uppercase mt-0.5">Menit Fokus</span>
+        </div>
+
+        <div class="card-white p-3 flex flex-col items-center text-center">
+          <span class="text-xl font-extrabold text-[#31572C]" id="statMicro">8</span>
+          <span class="text-[10px] font-bold text-[#7A8782] uppercase mt-0.5">Langkah Mikro</span>
+        </div>
+
+      </div>
+
+      <!-- 7-Day Activity Chart -->
+      <div class="card-white p-4 flex flex-col gap-3 border border-[#31572C]/10 shadow-sm">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xs font-bold text-[#132A13] uppercase tracking-wider">Aktivitas 7 Hari Terakhir</h2>
+          <span class="text-[10px] bg-[#AEF1CC] text-[#132A13] font-bold px-2 py-0.5 rounded-full">Konsisten</span>
+        </div>
+
+        <!-- Bar Columns -->
+        <div class="flex items-end justify-between h-28 pt-4 pb-1 border-b border-black/5 px-2">
+          
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="w-6 bg-[#AEF1CC] rounded-t-md hover:bg-[#31572C] transition-all" style="height: 40px;" title="Senin: 2 sesi"></div>
+            <span class="text-[10px] font-semibold text-[#7A8782]">Sen</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="w-6 bg-[#AEF1CC] rounded-t-md hover:bg-[#31572C] transition-all" style="height: 60px;" title="Selasa: 3 sesi"></div>
+            <span class="text-[10px] font-semibold text-[#7A8782]">Sel</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="w-6 bg-[#31572C] rounded-t-md transition-all shadow-sm" style="height: 85px;" title="Rabu: 4 sesi"></div>
+            <span class="text-[10px] font-bold text-[#31572C]">Rab</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="w-6 bg-[#AEF1CC] rounded-t-md hover:bg-[#31572C] transition-all" style="height: 30px;" title="Kamis: 1 sesi"></div>
+            <span class="text-[10px] font-semibold text-[#7A8782]">Kam</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="w-6 bg-[#31572C] rounded-t-md transition-all shadow-sm" style="height: 75px;" title="Jumat: 3 sesi"></div>
+            <span class="text-[10px] font-bold text-[#31572C]">Jum</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="w-6 bg-[#AEF1CC] rounded-t-md hover:bg-[#31572C] transition-all" style="height: 45px;" title="Sabtu: 2 sesi"></div>
+            <span class="text-[10px] font-semibold text-[#7A8782]">Sab</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="w-6 bg-[#EBE7D5] rounded-t-md" style="height: 15px;" title="Minggu: Hari Istirahat"></div>
+            <span class="text-[10px] font-semibold text-[#7A8782]">Min</span>
+          </div>
+
+        </div>
+        <p class="text-[10px] text-[#7A8782] text-center italic">
+          "Tidak apa-apa jika ada hari yang kosong. Istirahat juga bagian dari proses."
+        </p>
+      </div>
+
+      <!-- Riwayat Refleksi -->
+      <div class="flex flex-col gap-2 mt-1">
+        <h3 class="text-xs font-bold text-[#132A13] uppercase tracking-wider">Catatan Refleksi Terbaru</h3>
+        
+        <div id="reflectionList" class="flex flex-col gap-2">
+          <!-- Item 1 -->
+          <div class="card-white p-3.5 flex flex-col gap-1.5 border border-black/5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-[#132A13]">Tuliskan tiga hal yang harus dikerjakan</span>
+              <span class="text-[10px] bg-[#AEF1CC] text-[#132A13] font-bold px-2 py-0.5 rounded-full">Lebih ringan 😊</span>
+            </div>
+            <p class="text-xs text-[#404943]">
+              "Awalnya berat banget mau buka laptop, tapi setelah 2 menit ternyata bisa lanjut bikin outline."
+            </p>
+            <span class="text-[10px] text-[#7A8782] mt-0.5">Hari ini, 09.20 • 2 menit</span>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="card-white p-3.5 flex flex-col gap-1.5 border border-black/5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-[#132A13]">Membaca 2 paragraf pengantar</span>
+              <span class="text-[10px] bg-[#FFF7AF] text-[#132A13] font-bold px-2 py-0.5 rounded-full">Biasa saja 😐</span>
+            </div>
+            <p class="text-xs text-[#404943]">
+              "Belum banyak yang selesai, tapi setidaknya sudah tahu apa yang perlu dicari nanti malam."
+            </p>
+            <span class="text-[10px] text-[#7A8782] mt-0.5">Kemarin, 20.15 • 2 menit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Riwayat Cek Energi -->
+      <div class="flex flex-col gap-2 mt-1">
+        <h3 class="text-xs font-bold text-[#132A13] uppercase tracking-wider">Riwayat Cek Energi</h3>
+        
+        <div id="energyHistoryList" class="flex flex-col gap-2">
+          <div class="card-white p-3 flex items-center justify-between border border-black/5">
+            <div class="flex items-center gap-2.5">
+              <div class="w-3 h-3 rounded-full bg-[#AEF1CC]"></div>
+              <span class="text-xs font-bold text-[#132A13]">Energimu relatif baik</span>
+            </div>
+            <span class="text-[10px] text-[#7A8782]">Minggu lalu</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item active">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved activity logs from local storage
+      const logs = JSON.parse(localStorage.getItem('mula_activity_logs') || '[]');
+      if (logs.length > 0) {
+        document.getElementById('statSessions').textContent = 12 + logs.length;
+        document.getElementById('statMinutes').textContent = 24 + (logs.length * 2);
+        document.getElementById('statMicro').textContent = 8 + logs.length;
+
+        const container = document.getElementById('reflectionList');
+        // Prepend user logs
+        logs.forEach(l => {
+          const div = document.createElement('div');
+          div.className = 'card-white p-3.5 flex flex-col gap-1.5 border border-[#31572C]/20 shadow-sm';
+          div.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-[#132A13]">${l.task_name}</span>
+              <span class="text-[10px] bg-[#AEF1CC] text-[#132A13] font-bold px-2 py-0.5 rounded-full">${l.mood_after || 'Selesai'}</span>
+            </div>
+            <p class="text-xs text-[#404943]">"${l.notes || 'Langkah awal berhasil diambil.'}"</p>
+            <span class="text-[10px] text-[#7A8782] mt-0.5">Baru saja • 2 menit</span>
+          `;
+          container.prepend(div);
+        });
+      }
+
+      // Load energy logs
+      const energyLogs = JSON.parse(localStorage.getItem('mula_energy_logs') || '[]');
+      if (energyLogs.length > 0) {
+        const eContainer = document.getElementById('energyHistoryList');
+        energyLogs.forEach(el => {
+          const div = document.createElement('div');
+          div.className = 'card-white p-3 flex items-center justify-between border border-black/5';
+          div.innerHTML = `
+            <div class="flex items-center gap-2.5">
+              <div class="w-3 h-3 rounded-full bg-[#31572C]"></div>
+              <span class="text-xs font-bold text-[#132A13]">${el.energy_status}</span>
+            </div>
+            <span class="text-[10px] text-[#7A8782]">Baru saja</span>
+          `;
+          eContainer.prepend(div);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

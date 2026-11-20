@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Mau Mulai dari Mana?</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24">
+    
+    <!-- Top Olive Header Banner -->
+    <header class="mula-header flex items-center gap-3">
+      <a href="home.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali">
+        <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+      </a>
+      <div>
+        <h1 class="text-xl font-bold">Mau mulai dari mana?</h1>
+        <p class="text-xs">Cukup 2 menit saja, dulu.</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-5 flex flex-col gap-4">
+      
+      <p class="text-xs text-[#404943] leading-relaxed">
+        Pilih cara yang paling nyaman untuk memecah rasa engganmu hari ini. Tidak ada tuntutan harus langsung selesai.
+      </p>
+
+      <!-- Option 1: Mulai Cepat -->
+      <div class="card-peach flex flex-col gap-3 relative overflow-hidden">
+        <div class="flex items-start justify-between">
+          <div class="flex flex-col">
+            <span class="text-xs font-bold text-[#795238] uppercase tracking-wider">Metode 1</span>
+            <h2 class="text-lg font-bold text-[#132A13] mt-0.5">Mulai Cepat</h2>
+          </div>
+          <div class="w-10 h-10 flex-shrink-0">
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+              <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+              <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+              <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+              <circle cx="43" cy="54" r="3" fill="#132A13"/>
+              <circle cx="57" cy="54" r="3" fill="#132A13"/>
+              <path d="M47 62C48.5 64 51.5 64 53 62" stroke="#132A13" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        <p class="text-xs text-[#404943] leading-relaxed">
+          Belum tahu mau mulai dari mana? Dapatkan satu langkah kecil acak sekarang tanpa perlu merencanakan.
+        </p>
+        <a href="mulai-hambatan.html" class="btn-primary py-2.5 text-sm mt-1">
+          Buka Mulai Cepat
+        </a>
+      </div>
+
+      <!-- Option 2: Tugas Saya -->
+      <div class="card-white flex flex-col gap-3 relative overflow-hidden border-2 border-[#AEF1CC]/50">
+        <div class="flex items-start justify-between">
+          <div class="flex flex-col">
+            <span class="text-xs font-bold text-[#31572C] uppercase tracking-wider">Metode 2</span>
+            <h2 class="text-lg font-bold text-[#132A13] mt-0.5">Tugas Saya</h2>
+          </div>
+          <div class="w-10 h-10 flex-shrink-0">
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+              <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+              <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+              <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+              <circle cx="43" cy="52" r="3.5" fill="#132A13"/>
+              <circle cx="57" cy="52" r="3.5" fill="#132A13"/>
+              <ellipse cx="50" cy="62" rx="4" ry="4" fill="#132A13"/>
+            </svg>
+          </div>
+        </div>
+        <p class="text-xs text-[#404943] leading-relaxed">
+          Pecah tugas besar jadi deretan langkah kecil yang terasa ramah di kepala dengan bantuan template atau AI.
+        </p>
+        <a href="pecah-tugas.html" class="btn-secondary py-2.5 text-sm mt-1 bg-white hover:bg-[#F2EEE1]">
+          Buka Tugas Saya
+        </a>
+      </div>
+
+      <!-- Section: Lanjutkan Tugas Terakhir -->
+      <div class="flex flex-col gap-2 mt-2">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-[#7A8782]">Lanjutkan tugas terakhir</h3>
+        
+        <div class="card-white flex flex-col gap-2 p-3.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-[#132A13]">Laporan praktikum Sistem Informasi</span>
+            <span class="text-[10px] font-semibold bg-[#AEF1CC] text-[#132A13] px-2 py-0.5 rounded-full">1/4 Selesai</span>
+          </div>
+          <span class="text-[11px] text-[#7A8782]">Deadline: 27 Nov 2026, 16.00</span>
+          
+          <!-- Progress bar -->
+          <div class="w-full h-2 bg-[#EBE7D5] rounded-full overflow-hidden mt-1">
+            <div class="h-full bg-[#31572C] rounded-full" style="width: 25%;"></div>
+          </div>
+
+          <a href="mulai-timer.html?task=Laporan+praktikum+Sistem+Informasi" class="btn-primary py-2 text-xs font-semibold mt-2">
+            Lanjut Sesi 2 Menit
+          </a>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item active">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+</body>
+</html>

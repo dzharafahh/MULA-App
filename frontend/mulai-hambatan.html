@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Apa yang Menghalangimu?</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .barrier-option {
+      background-color: #FFE5D9;
+      border: 2px solid transparent;
+      border-radius: 1.25rem;
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .barrier-option:hover {
+      transform: translateY(-1px);
+    }
+    .barrier-option.selected {
+      border-color: #31572C;
+      background-color: #FEDBCB;
+    }
+    .barrier-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #7A8782;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .barrier-option.selected .barrier-radio {
+      border-color: #31572C;
+      background-color: #31572C;
+    }
+    .barrier-option.selected .barrier-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background-color: #FFFFFF;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24">
+    
+    <!-- Top Olive Header Banner -->
+    <header class="mula-header flex items-center gap-3">
+      <a href="mulai-jenis-tugas.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali">
+        <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+      </a>
+      <div>
+        <h1 class="text-xl font-bold">Apa yang sedang menghalangimu?</h1>
+        <p class="text-xs">Mengakui rasa enggan adalah langkah pertama.</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-5 flex flex-col gap-4">
+      
+      <p class="text-xs text-[#404943] leading-relaxed">
+        Wajar merasa tertahan. Mengakui rasa enggan adalah kunci agar beban tidak makin menumpuk di kepala.
+      </p>
+
+      <!-- 5 Barriers -->
+      <div class="flex flex-col gap-2.5" id="barrierList">
+        
+        <!-- Takut -->
+        <div class="barrier-option selected" onclick="selectBarrier(this, 'Takut')">
+          <div class="barrier-radio"></div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-[#132A13]">Takut</span>
+            <span class="text-xs text-[#795238]">Takut salah, tidak sempurna, atau takut tidak selesai.</span>
+          </div>
+        </div>
+
+        <!-- Bingung -->
+        <div class="barrier-option" onclick="selectBarrier(this, 'Bingung')">
+          <div class="barrier-radio"></div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-[#132A13]">Bingung</span>
+            <span class="text-xs text-[#795238]">Semua terasa penting, bingung harus mulai dari mana.</span>
+          </div>
+        </div>
+
+        <!-- Lelah -->
+        <div class="barrier-option" onclick="selectBarrier(this, 'Lelah')">
+          <div class="barrier-radio"></div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-[#132A13]">Lelah</span>
+            <span class="text-xs text-[#795238]">Energi sedang menipis, fokus rasanya berat sekali.</span>
+          </div>
+        </div>
+
+        <!-- Malas -->
+        <div class="barrier-option" onclick="selectBarrier(this, 'Malas')">
+          <div class="barrier-radio"></div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-[#132A13]">Malas</span>
+            <span class="text-xs text-[#795238]">Sulit menemukan dorongan awal untuk bergerak.</span>
+          </div>
+        </div>
+
+        <!-- Panik -->
+        <div class="barrier-option" onclick="selectBarrier(this, 'Panik')">
+          <div class="barrier-radio"></div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-[#132A13]">Panik</span>
+            <span class="text-xs text-[#795238]">Deadline terasa terlalu dekat, pikiran jadi buntu.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Button -->
+      <button onclick="goToLangkah()" class="btn-primary py-3.5 text-sm mt-3 shadow-md">
+        Lanjut
+      </button>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item active">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    let currentBarrier = 'Takut';
+
+    function selectBarrier(el, name) {
+      document.querySelectorAll('.barrier-option').forEach(opt => opt.classList.remove('selected'));
+      el.classList.add('selected');
+      currentBarrier = name;
+    }
+
+    function goToLangkah() {
+      localStorage.setItem('mula_barrier', currentBarrier);
+      window.location.href = `mulai-langkah.html?barrier=${encodeURIComponent(currentBarrier)}`;
+    }
+  </script>
+</body>
+</html>

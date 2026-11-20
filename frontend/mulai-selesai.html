@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Apresiasi & Refleksi</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .feeling-pill {
+      background-color: #FEFEFE;
+      border: 1.5px solid rgba(122, 135, 130, 0.3);
+      border-radius: 1rem;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .feeling-pill:hover {
+      background-color: #F8F5E4;
+    }
+    .feeling-pill.selected {
+      border-color: #31572C;
+      background-color: #EBF4E9;
+    }
+    .feeling-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #7A8782;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .feeling-pill.selected .feeling-radio {
+      border-color: #31572C;
+      background-color: #31572C;
+    }
+    .feeling-pill.selected .feeling-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background-color: #FFFFFF;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24">
+    
+    <!-- Top Olive Header Banner -->
+    <header class="mula-header flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="home.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali ke Beranda">
+          <span class="material-symbols-outlined text-[24px]">home</span>
+        </a>
+        <div>
+          <h1 class="text-xl font-bold">Apresiasi dan Refleksi</h1>
+          <p class="text-xs">Setiap langkah kecil layak dirayakan.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-5 flex flex-col gap-4">
+      
+      <!-- Mascot & Congratulations Banner -->
+      <div class="card-yellow flex flex-col items-center text-center p-5 border border-[#90A955]/20">
+        <div class="w-20 h-20 mb-2">
+          <svg width="76" height="76" viewBox="0 0 100 100" fill="none">
+            <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+            <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+            <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+            <ellipse cx="24" cy="48" rx="6" ry="7" transform="rotate(-30 24 48)" fill="#E8D5B5"/>
+            <ellipse cx="76" cy="48" rx="6" ry="7" transform="rotate(30 76 48)" fill="#E8D5B5"/>
+            <circle cx="43" cy="52" r="3.5" fill="#132A13"/>
+            <circle cx="57" cy="52" r="3.5" fill="#132A13"/>
+            <ellipse cx="38" cy="58" rx="4.5" ry="3" fill="#FFAAA6"/>
+            <ellipse cx="62" cy="58" rx="4.5" ry="3" fill="#FFAAA6"/>
+            <ellipse cx="50" cy="62" rx="4" ry="4" fill="#132A13"/>
+          </svg>
+        </div>
+        <h2 class="text-base font-bold text-[#132A13]" id="finishGreeting">
+          Terima kasih sudah mencoba, Niki!
+        </h2>
+        <p class="text-xs text-[#404943] leading-relaxed mt-1 max-w-[280px]">
+          Kamu berhasil mengalahkan rasa enggan untuk memulai. Ini bagian yang paling sulit dari proses belajar.
+        </p>
+
+        <!-- Session Badge -->
+        <div class="mt-3 bg-[#AEF1CC] text-[#132A13] font-bold text-[11px] px-3.5 py-1 rounded-full shadow-sm">
+          +1 sesi Mulai 2 Menit • +1 langkah kecil
+        </div>
+      </div>
+
+      <!-- Reflection Question -->
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-bold text-[#132A13]">Bagaimana rasanya sekarang?</label>
+        
+        <div class="flex flex-col gap-2">
+          
+          <div class="feeling-pill selected" onclick="selectFeeling(this, 'Lebih ringan')">
+            <div class="feeling-radio"></div>
+            <span class="text-xs font-bold text-[#132A13]">Lebih ringan 😊</span>
+          </div>
+
+          <div class="feeling-pill" onclick="selectFeeling(this, 'Biasa saja')">
+            <div class="feeling-radio"></div>
+            <span class="text-xs font-bold text-[#132A13]">Biasa saja 😐</span>
+          </div>
+
+          <div class="feeling-pill" onclick="selectFeeling(this, 'Masih berat')">
+            <div class="feeling-radio"></div>
+            <span class="text-xs font-bold text-[#132A13]">Masih berat 😔</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Reflection Note (Optional) -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-[#132A13]">Tulis catatan singkat (opsional)</label>
+        <textarea id="reflectionNotes" rows="2" placeholder="Apa yang kamu rasakan atau hal kecil apa yang berhasil kamu lakukan?" class="w-full bg-[#FEFEFE] border border-[#7A8782]/30 rounded-xl p-3 text-xs text-[#132A13] outline-none focus:border-[#31572C]"></textarea>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col gap-2.5 pt-2">
+        <button onclick="saveAndGoJejak()" class="btn-primary py-3.5 shadow-md">
+          Simpan ke Jejak
+        </button>
+        <button onclick="continue10Minutes()" class="btn-secondary py-3 text-xs font-semibold bg-white">
+          Lanjut 10 Menit
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item active">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    let selectedFeelingText = 'Lebih ringan';
+
+    function selectFeeling(el, feeling) {
+      document.querySelectorAll('.feeling-pill').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedFeelingText = feeling;
+    }
+
+    async function saveAndGoJejak() {
+      const note = document.getElementById('reflectionNotes').value;
+      const step = localStorage.getItem('mula_current_step') || 'Langkah Mikro 2 Menit';
+      
+      const logEntry = {
+        task_name: step,
+        activity_type: 'mulai_2_menit',
+        duration_seconds: 120,
+        mood_after: selectedFeelingText,
+        notes: note || 'Berhasil memulai langkah kecil.',
+        created_at: new Date().toISOString()
+      };
+
+      // 1. Save to local storage history
+      let logs = JSON.parse(localStorage.getItem('mula_activity_logs') || '[]');
+      logs.unshift(logEntry);
+      localStorage.setItem('mula_activity_logs', JSON.stringify(logs));
+
+      // 2. Try POST to Laravel backend
+      try {
+        await fetch('http://127.0.0.1:8000/api/logs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(logEntry)
+        });
+      } catch (err) {
+        console.log('Backend sync offline, stored in local storage:', err);
+      }
+
+      window.location.href = 'jejak-langkah.html';
+    }
+
+    function continue10Minutes() {
+      window.location.href = 'mulai-timer.html?task=' + encodeURIComponent('Sesi Lanjutan 10 Menit');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = localStorage.getItem('mula_user') || 'Niki';
+      document.getElementById('finishGreeting').textContent = `Terima kasih sudah mencoba, ${user}!`;
+    });
+  </script>
+</body>
+</html>

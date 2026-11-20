@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Langkah 2 Menit</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24 justify-between">
+    
+    <div>
+      <!-- Top Olive Header Banner -->
+      <header class="mula-header flex items-center gap-3">
+        <a href="mulai-hambatan.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali">
+          <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="text-xl font-bold">Langkah 2 menit</h1>
+          <p class="text-xs">Satu tindakan mikro tanpa beban.</p>
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="p-6 flex flex-col items-center text-center">
+        
+        <!-- Tunny Thinking Mascot -->
+        <div class="w-24 h-24 my-3 flex items-center justify-center">
+          <svg width="88" height="88" viewBox="0 0 100 100" fill="none">
+            <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+            <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+            <path d="M50 25V33" stroke="#5E7035" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+            <ellipse cx="60" cy="66" rx="6" ry="6" fill="#E8D5B5"/>
+            <ellipse cx="26" cy="62" rx="5" ry="6" fill="#E8D5B5"/>
+            <circle cx="43" cy="52" r="3" fill="#132A13"/>
+            <circle cx="57" cy="52" r="3" fill="#132A13"/>
+            <ellipse cx="38" cy="57" rx="4" ry="2.5" fill="#FFAAA6"/>
+            <ellipse cx="62" cy="57" rx="4" ry="2.5" fill="#FFAAA6"/>
+            <ellipse cx="50" cy="62" rx="2" ry="2" fill="#132A13"/>
+            <ellipse cx="43" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+            <ellipse cx="57" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+          </svg>
+        </div>
+
+        <!-- Yellow Tag -->
+        <span class="bg-[#FFF7AF] text-[#132A13] font-bold text-xs px-3 py-1 rounded-full mb-3 shadow-sm">
+          Ini langkah kecil untukmu:
+        </span>
+
+        <!-- Step Title Card -->
+        <div class="card-white w-full p-5 flex flex-col gap-2 border-2 border-[#90A955]/20 shadow-md">
+          <h2 class="text-lg font-extrabold text-[#132A13] leading-snug" id="stepActionTitle">
+            Tuliskan tiga hal yang harus dikerjakan.
+          </h2>
+          <p class="text-xs text-[#404943] leading-relaxed mt-1" id="stepActionDesc">
+            Kerjakan selama dua menit saja. Setelah itu bebas, mau lanjut atau berhenti.
+          </p>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Bottom Buttons Area -->
+    <div class="p-6 flex flex-col gap-2.5">
+      <button onclick="startRitual()" class="btn-primary py-3.5 shadow-md">
+        Siap, Mulai
+      </button>
+      <button onclick="changeStep()" class="btn-secondary py-3 text-sm bg-white hover:bg-[#F2EEE1]">
+        <span class="material-symbols-outlined text-[18px]">cached</span>
+        <span>Ganti langkah</span>
+      </button>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item active">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    const microSteps = [
+      {
+        title: "Tuliskan tiga hal yang harus dikerjakan.",
+        desc: "Hanya buat daftarnya di selembar kertas atau catatan ponsel. Bebas urutannya."
+      },
+      {
+        title: "Tulis judul tugas di bagian paling atas halaman kosong.",
+        desc: "Buka dokumen atau buku catatanmu, lalu ketik/tuliskan saja judulnya. Itu sudah permulaan yang hebat."
+      },
+      {
+        title: "Pilih satu bagian yang paling mudah dan beri tanda bintang.",
+        desc: "Lihat rincian tugasmu, tandai 1 bagian yang rasanya paling tidak mengintimidasi."
+      },
+      {
+        title: "Tulis satu pertanyaan kecil tentang bagian tugas yang belum jelas.",
+        desc: "Cukup rumuskan apa yang membuatmu bingung dalam 1 kalimat pendek."
+      },
+      {
+        title: "Buka file tugas dan baca 2 paragraf pertama saja.",
+        desc: "Tidak perlu langsung mengetik atau menghafal, cukup kenali kembali bahasannya."
+      }
+    ];
+
+    let stepIndex = 0;
+
+    function renderMicroStep() {
+      const step = microSteps[stepIndex];
+      document.getElementById('stepActionTitle').textContent = step.title;
+      document.getElementById('stepActionDesc').textContent = step.desc;
+      localStorage.setItem('mula_current_step', step.title);
+    }
+
+    function changeStep() {
+      stepIndex = (stepIndex + 1) % microSteps.length;
+      renderMicroStep();
+    }
+
+    function startRitual() {
+      window.location.href = 'mulai-ritual.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderMicroStep();
+    });
+  </script>
+</body>
+</html>

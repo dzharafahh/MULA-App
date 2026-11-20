@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Tugas Saya & Pecah Tugas</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .tab-btn {
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #7A8782;
+      background-color: transparent;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background-color: #31572C;
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24">
+    
+    <!-- Top Olive Header Banner -->
+    <header class="mula-header flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="home.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali ke Beranda">
+          <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="text-xl font-bold">Tugas Saya</h1>
+          <p class="text-xs">Pecah tugas besar jadi langkah kecil.</p>
+        </div>
+      </div>
+      <button onclick="openNewTaskModal()" class="w-9 h-9 rounded-full bg-[#31572C] text-white flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition" title="Tambah Tugas">
+        <span class="material-symbols-outlined text-[20px]">add</span>
+      </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-5 flex flex-col gap-4">
+      
+      <!-- Filter Tabs: Aktif / Selesai -->
+      <div class="flex items-center gap-2 p-1 bg-[#EBE7D5] rounded-full w-fit">
+        <button onclick="switchTab('aktif')" id="tabAktif" class="tab-btn active">Aktif</button>
+        <button onclick="switchTab('selesai')" id="tabSelesai" class="tab-btn">Selesai</button>
+      </div>
+
+      <!-- Active Tasks List Container -->
+      <div id="taskList" class="flex flex-col gap-3">
+        
+        <!-- Task 1: Laporan Praktikum -->
+        <div class="card-white flex flex-col gap-2.5 border border-[#31572C]/10 shadow-sm">
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-[#795238] uppercase tracking-wider">Laporan Praktikum</span>
+              <h2 class="text-sm font-bold text-[#132A13] mt-0.5">Laporan praktikum Sistem Informasi</h2>
+            </div>
+            <span class="text-[10px] font-semibold bg-[#AEF1CC] text-[#132A13] px-2 py-0.5 rounded-full">1 dari 4 langkah</span>
+          </div>
+
+          <div class="flex items-center gap-1.5 text-[11px] text-[#7A8782]">
+            <span class="material-symbols-outlined text-[15px]">event</span>
+            <span>Deadline: 27 Nov 2026, 16.00</span>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full h-2 bg-[#EBE7D5] rounded-full overflow-hidden mt-1">
+            <div class="h-full bg-[#31572C] rounded-full" style="width: 25%;"></div>
+          </div>
+
+          <!-- Subtasks Stepping Stones -->
+          <div class="flex flex-col gap-1.5 mt-2 pt-2 border-t border-black/5">
+            <div class="flex items-center justify-between text-xs py-1">
+              <span class="line-through text-[#7A8782]">1. Mengumpulkan data praktikum (20 mnt)</span>
+              <span class="text-[10px] text-[#31572C] font-bold">Selesai</span>
+            </div>
+            <div class="flex items-center justify-between text-xs py-1">
+              <span class="text-[#132A13] font-semibold">2. Membuat bagan pendahuluan (30 mnt)</span>
+              <a href="mulai-timer.html?task=Membuat+bagan+pendahuluan" class="bg-[#31572C] text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm hover:scale-105 transition">
+                Mulai 2 Menit
+              </a>
+            </div>
+            <div class="flex items-center justify-between text-xs py-1 text-[#404943]">
+              <span>3. Menulis metode praktikum (25 mnt)</span>
+              <span class="text-[10px] text-[#7A8782]">Belum</span>
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-2 mt-2 pt-2 border-t border-black/5">
+            <button onclick="openDetail(1)" class="btn-secondary py-1.5 px-3 text-xs w-auto bg-white">
+              Detail Tugas
+            </button>
+          </div>
+        </div>
+
+        <!-- Task 2: Presentasi Kelompok -->
+        <div class="card-white flex flex-col gap-2.5 border border-[#31572C]/10 shadow-sm">
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-[#795238] uppercase tracking-wider">Presentasi</span>
+              <h2 class="text-sm font-bold text-[#132A13] mt-0.5">Presentasi Kelompok</h2>
+            </div>
+            <span class="text-[10px] font-semibold bg-[#FFE5D9] text-[#795238] px-2 py-0.5 rounded-full">0 dari 4 langkah</span>
+          </div>
+
+          <div class="flex items-center gap-1.5 text-[11px] text-[#7A8782]">
+            <span class="material-symbols-outlined text-[15px]">event</span>
+            <span>Deadline: 28 Nov 2026, 10.00</span>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full h-2 bg-[#EBE7D5] rounded-full overflow-hidden mt-1">
+            <div class="h-full bg-[#31572C] rounded-full" style="width: 0%;"></div>
+          </div>
+
+          <div class="flex items-center justify-between mt-2 pt-2 border-t border-black/5">
+            <span class="text-xs font-semibold text-[#132A13]">Langkah awal: Tentukan 3 poin utama slide</span>
+            <a href="mulai-timer.html?task=Tentukan+3+poin+utama+slide" class="bg-[#31572C] text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm hover:scale-105 transition">
+              Mulai 2 Menit
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Add Task Big Button -->
+      <button onclick="openNewTaskModal()" class="btn-primary py-3 text-sm mt-2 shadow-md">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        <span>+ Tambah Tugas Baru</span>
+      </button>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item active">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- MODAL: TAMBAH TUGAS (Matching Figma Sheet 5) -->
+  <div id="newTaskModal" class="fixed inset-0 bg-black/40 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+    <div class="bg-[#F8F5E4] rounded-t-3xl sm:rounded-3xl p-6 w-full max-w-[430px] max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col gap-4 border border-[#31572C]/10">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-black/5 pb-3">
+        <h3 class="text-base font-bold text-[#132A13]" id="modalTitle">Tugas apa yang mau dipecah?</h3>
+        <button onclick="closeNewTaskModal()" class="text-[#7A8782] hover:text-black">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- STEP A: INPUT FORM -->
+      <div id="modalStepA" class="flex flex-col gap-3">
+        
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-semibold text-[#132A13]">Jenis tugas</label>
+          <select id="taskCategory" class="mula-input text-xs">
+            <option value="Laporan Praktikum">Laporan Praktikum</option>
+            <option value="Skripsi / Tugas Akhir">Skripsi / Tugas Akhir</option>
+            <option value="Presentasi Kelompok">Presentasi Kelompok</option>
+            <option value="Belajar Ujian">Belajar Ujian</option>
+            <option value="Tugas Mingguan">Tugas Mingguan</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-semibold text-[#132A13]">Judul tugas</label>
+          <input type="text" id="taskTitle" placeholder="Contoh: Laporan praktikum Basis Data" class="mula-input text-xs"/>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-semibold text-[#132A13]">Deadline</label>
+          <input type="datetime-local" id="taskDeadline" class="mula-input text-xs"/>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-semibold text-[#132A13]">Deskripsi atau instruksi dosen (opsional)</label>
+          <textarea id="taskDesc" rows="2" placeholder="Tempel instruksi dosen atau catatan tugas di sini..." class="w-full bg-[#FEFEFE] border border-[#7A8782]/30 rounded-xl p-3 text-xs text-[#132A13] outline-none"></textarea>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button onclick="goToBreakdownChoice()" class="btn-primary py-3 text-xs flex-1">
+            Lanjut
+          </button>
+          <button onclick="closeNewTaskModal()" class="btn-secondary py-3 text-xs w-24 bg-white">
+            Batal
+          </button>
+        </div>
+
+      </div>
+
+      <!-- STEP B: BREAKDOWN CHOICE (Pakai Template vs Bantuan AI) -->
+      <div id="modalStepB" class="flex flex-col gap-3 hidden">
+        <p class="text-xs text-[#404943]">Mau dipecah dengan cara apa?</p>
+        
+        <!-- Choice 1: Template -->
+        <div onclick="generateWithTemplate()" class="card-white p-4 border border-[#31572C]/20 hover:border-[#31572C] cursor-pointer transition flex flex-col gap-1">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-bold text-[#132A13]">Pakai Template</h4>
+            <span class="text-xs bg-[#AEF1CC] text-[#132A13] font-bold px-2 py-0.5 rounded-full">Cepat</span>
+          </div>
+          <p class="text-xs text-[#404943]">Tahap standar sesuai jenis tugasmu. Cepat dan bisa dipakai langsung tanpa internet.</p>
+        </div>
+
+        <!-- Choice 2: Gemini AI -->
+        <div onclick="generateWithAI()" class="card-peach p-4 border border-[#795238]/20 hover:border-[#31572C] cursor-pointer transition flex flex-col gap-1">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-bold text-[#132A13]">Bantuan AI (Gemini)</h4>
+            <span class="text-xs bg-[#FFF7AF] text-[#132A13] font-bold px-2 py-0.5 rounded-full">Personal</span>
+          </div>
+          <p class="text-xs text-[#404943]">Gemini menganalisa tugasmu dan menyusun tahapan relevan dilengkapi langkah awal 2 menit.</p>
+        </div>
+      </div>
+
+      <!-- STEP C: AI LOADING ANIMATION -->
+      <div id="modalStepC" class="flex flex-col items-center text-center p-6 gap-3 hidden">
+        <div class="w-16 h-16 animate-pulse">
+          <svg width="64" height="64" viewBox="0 0 100 100" fill="none">
+            <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+            <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+            <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+            <circle cx="43" cy="54" r="3" fill="#132A13"/>
+            <circle cx="57" cy="54" r="3" fill="#132A13"/>
+            <path d="M47 62C48.5 64 51.5 64 53 62" stroke="#132A13" stroke-width="2"/>
+          </svg>
+        </div>
+        <h4 class="text-sm font-bold text-[#132A13]">Tunny sedang memecah tugasmu...</h4>
+        <p class="text-xs text-[#7A8782]">Menyiapkan langkah kecil yang ramah di pikiran.</p>
+      </div>
+
+      <!-- STEP D: HASIL PECAH TUGAS -->
+      <div id="modalStepD" class="flex flex-col gap-3 hidden">
+        <h4 class="text-xs font-bold text-[#31572C] uppercase tracking-wider">Ini tahapan untuk tugasmu:</h4>
+        
+        <div id="generatedStepsList" class="flex flex-col gap-2">
+          <!-- Dynamically populated -->
+        </div>
+
+        <button onclick="saveNewTask()" class="btn-primary py-3 text-xs mt-2">
+          Simpan Tugas
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentTaskData = {};
+    let generatedSubtasks = [];
+
+    function openNewTaskModal() {
+      document.getElementById('newTaskModal').classList.remove('hidden');
+      document.getElementById('modalStepA').classList.remove('hidden');
+      document.getElementById('modalStepB').classList.add('hidden');
+      document.getElementById('modalStepC').classList.add('hidden');
+      document.getElementById('modalStepD').classList.add('hidden');
+    }
+
+    function closeNewTaskModal() {
+      document.getElementById('newTaskModal').classList.add('hidden');
+    }
+
+    function goToBreakdownChoice() {
+      const title = document.getElementById('taskTitle').value;
+      if (!title) {
+        alert('Mohon masukkan judul tugas.');
+        return;
+      }
+      currentTaskData = {
+        title: title,
+        category: document.getElementById('taskCategory').value,
+        deadline: document.getElementById('taskDeadline').value || '2026-11-30 23:59',
+        desc: document.getElementById('taskDesc').value
+      };
+
+      document.getElementById('modalStepA').classList.add('hidden');
+      document.getElementById('modalStepB').classList.remove('hidden');
+    }
+
+    function generateWithTemplate() {
+      generatedSubtasks = [
+        { title: 'Kumpulkan materi dan data dasar', duration: '20 menit' },
+        { title: 'Tulis kerangka dan poin-poin utama', duration: '25 menit' },
+        { title: 'Susun draf pembahasan isi', duration: '35 menit' },
+        { title: 'Periksa format dan kesimpulan akhir', duration: '15 menit' }
+      ];
+      renderGeneratedSteps();
+    }
+
+    async function generateWithAI() {
+      document.getElementById('modalStepB').classList.add('hidden');
+      document.getElementById('modalStepC').classList.remove('hidden');
+
+      try {
+        // Call backend API if running
+        const res = await fetch('http://127.0.0.1:8000/api/tasks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: currentTaskData.title,
+            category: currentTaskData.category,
+            deadline: currentTaskData.deadline,
+            description: currentTaskData.desc
+          })
+        });
+        
+        if (res.ok) {
+          const taskObj = await res.json();
+          // Call AI breakdown endpoint
+          const aiRes = await fetch(`http://127.0.0.1:8000/api/tasks/${taskObj.data.id}/breakdown`, {
+            method: 'POST'
+          });
+          const aiData = await aiRes.json();
+          if (aiData.data && aiData.data.length) {
+            generatedSubtasks = aiData.data.map(st => ({
+              title: st.title,
+              duration: `${st.estimated_minutes || 25} menit`
+            }));
+          }
+        }
+      } catch (err) {
+        console.log('AI API offline or mock mode, using smart breakdown:', err);
+      }
+
+      if (!generatedSubtasks.length) {
+        generatedSubtasks = [
+          { title: `Tulis 1 paragraf pendahuluan ${currentTaskData.title}`, duration: '15 menit' },
+          { title: 'Kumpulkan 2 referensi kunci', duration: '20 menit' },
+          { title: 'Selesaikan bagian inti dokumen', duration: '30 menit' },
+          { title: 'Cek ulang kerapian dan format', duration: '15 menit' }
+        ];
+      }
+
+      setTimeout(() => {
+        document.getElementById('modalStepC').classList.add('hidden');
+        renderGeneratedSteps();
+      }, 800);
+    }
+
+    function renderGeneratedSteps() {
+      const container = document.getElementById('generatedStepsList');
+      container.innerHTML = '';
+      generatedSubtasks.forEach((st, i) => {
+        container.innerHTML += `
+          <div class="card-white p-3 flex items-center justify-between text-xs border border-black/5">
+            <div class="flex flex-col">
+              <span class="font-bold text-[#132A13]">${i + 1}. ${st.title}</span>
+              <span class="text-[10px] text-[#7A8782]">Estimasi: ${st.duration}</span>
+            </div>
+            <a href="mulai-timer.html?task=${encodeURIComponent(st.title)}" class="bg-[#31572C] text-white text-[10px] font-bold px-2 py-1 rounded-full">
+              Mulai 2 Menit
+            </a>
+          </div>
+        `;
+      });
+      document.getElementById('modalStepD').classList.remove('hidden');
+    }
+
+    function saveNewTask() {
+      alert('Tugas dan tahapan berhasil disimpan!');
+      closeNewTaskModal();
+      window.location.reload();
+    }
+
+    function switchTab(t) {
+      if (t === 'aktif') {
+        document.getElementById('tabAktif').classList.add('active');
+        document.getElementById('tabSelesai').classList.remove('active');
+        document.getElementById('taskList').classList.remove('hidden');
+      } else {
+        document.getElementById('tabAktif').classList.remove('active');
+        document.getElementById('tabSelesai').classList.add('active');
+        document.getElementById('taskList').classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

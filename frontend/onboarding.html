@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Onboarding</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .soil-mound {
+      background: radial-gradient(ellipse 140% 100% at 50% 100%, #6E4327 0%, #7B4B2F 45%, #8D5B3C 80%, #9B6543 100%);
+      border-top-left-radius: 50% 100px;
+      border-top-right-radius: 50% 100px;
+    }
+    .slide-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background-color: rgba(255, 255, 255, 0.4);
+      transition: all 0.3s ease;
+    }
+    .slide-dot.active {
+      width: 24px;
+      background-color: #FFFFFF;
+    }
+  </style>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell justify-between relative overflow-hidden">
+    
+    <!-- Header with "Lewati" button -->
+    <div class="flex items-center justify-end px-6 pt-6 z-20">
+      <a href="login.html" class="text-sm font-semibold text-[#31572C] hover:opacity-80 transition py-1 px-3 rounded-full hover:bg-black/5">Lewati</a>
+    </div>
+
+    <!-- Slide Content Area (Dynamic) -->
+    <div class="px-8 pt-4 pb-2 z-20 flex flex-col items-center text-center transition-all duration-300" id="slideText">
+      <h2 class="text-2xl font-bold text-[#132A13] leading-snug tracking-tight mb-3" id="slideTitle">
+        Tugas Besar Itu Wajar Bikin Berat
+      </h2>
+      <p class="text-[15px] text-[#404943] leading-relaxed max-w-[320px]" id="slideBody">
+        Menunda bukan berarti malas. Kadang kita cuma bingung harus mulai dari mana. MULA hadir tanpa menghakimi.
+      </p>
+    </div>
+
+    <!-- Center/Bottom Visual Area: Mascot + Earth Mound -->
+    <div class="soil-mound w-full h-[360px] relative flex flex-col items-center justify-between pt-2 pb-8 px-6 z-10 shadow-inner mt-auto">
+      
+      <!-- Mascot Container -->
+      <div class="relative -top-16 flex flex-col items-center cursor-pointer transition-transform duration-300" id="mascotContainer">
+        <!-- SVG Mascot dynamically swapped -->
+        <div id="mascotSvg">
+          <!-- Slide 1: Thinking Tunny -->
+          <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+            <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+            <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+            <path d="M50 25V33" stroke="#5E7035" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+            <!-- Thinking hand on chin -->
+            <ellipse cx="60" cy="66" rx="6" ry="6" fill="#E8D5B5"/>
+            <ellipse cx="26" cy="62" rx="5" ry="6" fill="#E8D5B5"/>
+            <!-- Curious Eyes -->
+            <circle cx="43" cy="52" r="3" fill="#132A13"/>
+            <circle cx="57" cy="52" r="3" fill="#132A13"/>
+            <!-- Blushing -->
+            <ellipse cx="38" cy="57" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+            <ellipse cx="62" cy="57" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+            <!-- Thoughtful mouth -->
+            <ellipse cx="50" cy="62" rx="2" ry="2" fill="#132A13"/>
+            <ellipse cx="43" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+            <ellipse cx="57" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Action Button & Dots inside Soil Area -->
+      <div class="w-full flex flex-col items-center gap-4 z-20">
+        
+        <!-- Button -->
+        <button onclick="nextSlide()" id="nextBtn" class="btn-primary w-full max-w-[320px] shadow-lg">
+          Lanjut
+        </button>
+
+        <!-- Dots Indicator -->
+        <div class="flex items-center justify-center gap-2">
+          <div class="slide-dot active" id="dot0"></div>
+          <div class="slide-dot" id="dot1"></div>
+          <div class="slide-dot" id="dot2"></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const slides = [
+      {
+        title: "Tugas Besar Itu Wajar Bikin Berat",
+        body: "Menunda bukan berarti malas. Kadang kita cuma bingung harus mulai dari mana. MULA hadir tanpa menghakimi.",
+        btn: "Lanjut",
+        mascot: `
+          <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+            <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+            <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+            <path d="M50 25V33" stroke="#5E7035" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+            <ellipse cx="60" cy="66" rx="6" ry="6" fill="#E8D5B5"/>
+            <ellipse cx="26" cy="62" rx="5" ry="6" fill="#E8D5B5"/>
+            <circle cx="43" cy="52" r="3" fill="#132A13"/>
+            <circle cx="57" cy="52" r="3" fill="#132A13"/>
+            <ellipse cx="38" cy="57" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+            <ellipse cx="62" cy="57" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+            <ellipse cx="50" cy="62" rx="2" ry="2" fill="#132A13"/>
+            <ellipse cx="43" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+            <ellipse cx="57" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+          </svg>
+        `
+      },
+      {
+        title: "Cukup Satu Langkah Kecil",
+        body: "Lewat Mulai 2 Menit dan Pecah Tugas, pekerjaan besar diubah jadi tindakan sederhana yang bisa langsung kamu lakukan.",
+        btn: "Lanjut",
+        mascot: `
+          <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+            <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+            <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+            <path d="M50 25V33" stroke="#5E7035" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+            <circle cx="43" cy="54" r="3" fill="#132A13"/>
+            <circle cx="57" cy="54" r="3" fill="#132A13"/>
+            <path d="M47 62C48.5 64 51.5 64 53 62" stroke="#132A13" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="38" cy="59" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+            <ellipse cx="62" cy="59" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+            <!-- Watering can in hand -->
+            <ellipse cx="26" cy="62" rx="5" ry="6" fill="#E8D5B5"/>
+            <path d="M68 62L76 56V70L68 66Z" fill="#C49A6C"/>
+            <rect x="62" y="60" width="8" height="8" rx="2" fill="#AEF1CC"/>
+            <ellipse cx="43" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+            <ellipse cx="57" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+          </svg>
+        `
+      },
+      {
+        title: "Berhasil Itu Saat Kamu Berani Memulai",
+        body: "Kami mengapresiasi prosesmu, bukan hanya hasilnya. Kenali energimu, atur ritme, dan rayakan setiap langkah.",
+        btn: "Mulai",
+        mascot: `
+          <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
+            <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+            <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+            <path d="M50 25V33" stroke="#5E7035" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+            <!-- Both hands raised cheering -->
+            <ellipse cx="24" cy="48" rx="6" ry="7" transform="rotate(-30 24 48)" fill="#E8D5B5"/>
+            <ellipse cx="76" cy="48" rx="6" ry="7" transform="rotate(30 76 48)" fill="#E8D5B5"/>
+            <circle cx="43" cy="52" r="3.5" fill="#132A13"/>
+            <circle cx="57" cy="52" r="3.5" fill="#132A13"/>
+            <circle cx="44" cy="51" r="1.2" fill="#FFFFFF"/>
+            <circle cx="58" cy="51" r="1.2" fill="#FFFFFF"/>
+            <ellipse cx="38" cy="58" rx="4.5" ry="3" fill="#FFAAA6" opacity="0.8"/>
+            <ellipse cx="62" cy="58" rx="4.5" ry="3" fill="#FFAAA6" opacity="0.8"/>
+            <!-- Open cheering mouth -->
+            <ellipse cx="50" cy="62" rx="4" ry="4" fill="#132A13"/>
+            <ellipse cx="43" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+            <ellipse cx="57" cy="80" rx="6" ry="4" fill="#E8D5B5"/>
+          </svg>
+        `
+      }
+    ];
+
+    let current = 0;
+
+    function renderSlide() {
+      const s = slides[current];
+      document.getElementById('slideTitle').textContent = s.title;
+      document.getElementById('slideBody').textContent = s.body;
+      document.getElementById('nextBtn').textContent = s.btn;
+      document.getElementById('mascotSvg').innerHTML = s.mascot;
+
+      for (let i = 0; i < 3; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        if (i === current) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      }
+    }
+
+    function nextSlide() {
+      if (current < 2) {
+        current++;
+        renderSlide();
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+</body>
+</html>

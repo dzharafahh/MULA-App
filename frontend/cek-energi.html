@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MULA — Cek Energi</title>
+  <link rel="stylesheet" href="css/mula-theme.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .energy-option {
+      background-color: #FEFEFE;
+      border: 1.5px solid rgba(122, 135, 130, 0.25);
+      border-radius: 1rem;
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .energy-option:hover {
+      background-color: #F8F5E4;
+    }
+    .energy-option.selected {
+      border-color: #31572C;
+      background-color: #EBF4E9;
+    }
+    .energy-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #7A8782;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .energy-option.selected .energy-radio {
+      border-color: #31572C;
+      background-color: #31572C;
+    }
+    .energy-option.selected .energy-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background-color: #FFFFFF;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body class="bg-[#EBE7D5] flex justify-center items-center min-h-screen">
+
+  <div class="mula-shell pb-24 justify-between">
+    
+    <div>
+      <!-- Top Olive Header Banner -->
+      <header class="mula-header flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <a href="home.html" class="p-1 rounded-full hover:bg-black/10 transition" title="Kembali ke Beranda">
+            <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+          </a>
+          <div>
+            <h1 class="text-xl font-bold" id="headerTitle">Cek Energi</h1>
+            <p class="text-xs" id="headerSubtitle">Kenali kondisi pikiran dan tubuhmu.</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW 1: INTRO SCREEN -->
+      <main id="introView" class="p-6 flex flex-col items-center text-center gap-4">
+        
+        <div class="w-24 h-24 my-2">
+          <svg width="88" height="88" viewBox="0 0 100 100" fill="none">
+            <path d="M48 24C44 14 36 12 33 14C30 16 31 24 43 28C47 29.5 48 26 48 24Z" fill="#90A955"/>
+            <path d="M52 24C56 14 64 12 67 14C70 16 69 24 57 28C53 29.5 52 26 52 24Z" fill="#758B42"/>
+            <ellipse cx="50" cy="58" rx="26" ry="24" fill="#F4E6D0"/>
+            <circle cx="43" cy="54" r="3" fill="#132A13"/>
+            <circle cx="57" cy="54" r="3" fill="#132A13"/>
+            <path d="M47 62C48.5 64 51.5 64 53 62" stroke="#132A13" stroke-width="2"/>
+            <ellipse cx="38" cy="59" rx="4" ry="2.5" fill="#FFAAA6"/>
+            <ellipse cx="62" cy="59" rx="4" ry="2.5" fill="#FFAAA6"/>
+          </svg>
+        </div>
+
+        <div class="card-white p-5 border border-[#31572C]/10 text-center flex flex-col gap-2">
+          <h2 class="text-base font-bold text-[#132A13]">Empat pertanyaan singkat untuk mengenali kondisimu minggu ini.</h2>
+          <p class="text-xs text-[#404943] leading-relaxed">
+            Bukan tes psikologis, dan tidak ada jawaban yang salah. Hasilnya membantumu menentukan ritme belajar yang tepat.
+          </p>
+        </div>
+
+        <div class="w-full flex flex-col gap-2.5 mt-4">
+          <button onclick="startQuestions()" class="btn-primary py-3.5 shadow-md">
+            Mulai
+          </button>
+          <a href="home.html" class="text-xs text-[#7A8782] py-2 hover:underline">
+            Nanti saja
+          </a>
+        </div>
+
+      </main>
+
+      <!-- VIEW 2: QUESTIONS WIZARD -->
+      <main id="quizView" class="p-6 flex flex-col gap-4 hidden">
+        
+        <!-- Progress Bar -->
+        <div class="flex flex-col gap-1.5">
+          <div class="flex items-center justify-between text-xs font-bold text-[#31572C]">
+            <span id="questionStepLabel">Pertanyaan 1 dari 4</span>
+            <span id="questionPercent">25%</span>
+          </div>
+          <div class="w-full h-2 bg-[#EBE7D5] rounded-full overflow-hidden">
+            <div id="quizProgressBar" class="h-full bg-[#31572C] rounded-full transition-all duration-300" style="width: 25%;"></div>
+          </div>
+        </div>
+
+        <!-- Question Title -->
+        <h2 class="text-base font-bold text-[#132A13] mt-2 leading-snug" id="questionText">
+          Bagaimana kualitas tidurmu dalam beberapa hari terakhir?
+        </h2>
+
+        <!-- Options Container -->
+        <div class="flex flex-col gap-2.5" id="optionsContainer">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Nav buttons -->
+        <div class="flex gap-2.5 mt-4">
+          <button onclick="prevQuestion()" id="prevBtn" class="btn-secondary py-3 text-xs w-28 bg-white hidden">
+            Kembali
+          </button>
+          <button onclick="nextQuestion()" id="nextBtn" class="btn-primary py-3 text-xs flex-1 shadow-md">
+            Lanjut
+          </button>
+        </div>
+
+        <button onclick="exitQuiz()" class="text-xs text-[#7A8782] text-center hover:underline mt-2">
+          Keluar dari Cek Energi
+        </button>
+
+      </main>
+
+      <!-- VIEW 3: RESULTS SCREEN -->
+      <main id="resultView" class="p-6 flex flex-col gap-4 hidden">
+        
+        <!-- Result Card (Green / Yellow / Red) -->
+        <div id="resultCard" class="card-white p-6 flex flex-col items-center text-center gap-3 border shadow-md">
+          <div class="w-16 h-16" id="resultTunnyIcon"></div>
+          <h2 class="text-lg font-bold text-[#132A13]" id="resultTitle">Energimu relatif baik</h2>
+          <div id="resultYellowBanner" class="card-yellow py-2 px-3 text-xs font-bold text-[#132A13] w-full hidden">
+            Kamu sudah berusaha, istirahat dulu yuk.
+          </div>
+          <p class="text-xs text-[#404943] leading-relaxed" id="resultDesc">
+            Lanjutkan ritmemu secara seimbang. Tetap sediakan waktu istirahat di antara tugas.
+          </p>
+        </div>
+
+        <!-- Result Action Buttons -->
+        <div class="flex flex-col gap-2.5" id="resultActions">
+          <!-- Dynamically filled according to category -->
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="mula-nav">
+      <a href="home.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">home</span>
+        <span>Beranda</span>
+      </a>
+      <a href="mulai-jenis-tugas.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">timer</span>
+        <span>Mulai</span>
+      </a>
+      <a href="sos-deadline.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">emergency</span>
+        <span>SOS</span>
+      </a>
+      <a href="jejak-langkah.html" class="mula-nav-item">
+        <span class="material-symbols-outlined">footprint</span>
+        <span>Jejak</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "Bagaimana kualitas tidurmu dalam beberapa hari terakhir?",
+        options: [
+          { text: "Nyenyak dan cukup", score: 1 },
+          { text: "Lumayan", score: 2 },
+          { text: "Sering terbangun atau kurang", score: 3 },
+          { text: "Hampir tidak tidur", score: 4 }
+        ]
+      },
+      {
+        q: "Seberapa berat beban tugas yang sedang kamu hadapi?",
+        options: [
+          { text: "Ringan", score: 1 },
+          { text: "Cukup", score: 2 },
+          { text: "Berat", score: 3 },
+          { text: "Terlalu berat", score: 4 }
+        ]
+      },
+      {
+        q: "Bagaimana tingkat semangatmu menjalani aktivitas?",
+        options: [
+          { text: "Bersemangat!", score: 1 },
+          { text: "Biasa saja", score: 2 },
+          { text: "Mulai menurun", score: 3 },
+          { text: "Hampir tidak ada", score: 4 }
+        ]
+      },
+      {
+        q: "Apakah kamu merasa memiliki dukungan ketika menghadapi kesulitan?",
+        options: [
+          { text: "Ya, banyak", score: 1 },
+          { text: "Cukup", score: 2 },
+          { text: "Sedikit", score: 3 },
+          { text: "Tidak ada", score: 4 }
+        ]
+      }
+    ];
+
+    let currentQ = 0;
+    let selectedScores = [1, 2, 2, 1];
+
+    function startQuestions() {
+      document.getElementById('introView').classList.add('hidden');
+      document.getElementById('quizView').classList.remove('hidden');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQ];
+      document.getElementById('questionStepLabel').textContent = `Pertanyaan ${currentQ + 1} dari ${questions.length}`;
+      const pct = Math.round(((currentQ + 1) / questions.length) * 100);
+      document.getElementById('questionPercent').textContent = `${pct}%`;
+      document.getElementById('quizProgressBar').style.width = `${pct}%`;
+      document.getElementById('questionText').textContent = q.q;
+
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const isSelected = selectedScores[currentQ] === opt.score;
+        container.innerHTML += `
+          <div class="energy-option ${isSelected ? 'selected' : ''}" onclick="selectAnswer(${opt.score}, this)">
+            <div class="energy-radio"></div>
+            <span class="text-xs font-semibold text-[#132A13]">${opt.text}</span>
+          </div>
+        `;
+      });
+
+      document.getElementById('prevBtn').classList.toggle('hidden', currentQ === 0);
+      document.getElementById('nextBtn').textContent = (currentQ === questions.length - 1) ? 'Lihat Hasil' : 'Lanjut';
+    }
+
+    function selectAnswer(score, el) {
+      document.querySelectorAll('.energy-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedScores[currentQ] = score;
+    }
+
+    function prevQuestion() {
+      if (currentQ > 0) {
+        currentQ--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (currentQ < questions.length - 1) {
+        currentQ++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function exitQuiz() {
+      window.location.href = 'home.html';
+    }
+
+    function showResults() {
+      document.getElementById('quizView').classList.add('hidden');
+      document.getElementById('resultView').classList.remove('hidden');
+
+      const totalScore = selectedScores.reduce((a, b) => a + b, 0);
+      const actions = document.getElementById('resultActions');
+      const banner = document.getElementById('resultYellowBanner');
+
+      if (totalScore <= 7) {
+        // HIJAU: Baik
+        document.getElementById('resultTitle').textContent = 'Energimu relatif baik';
+        document.getElementById('resultDesc').textContent = 'Lanjutkan ritmemu secara seimbang. Tetap sediakan waktu istirahat di antara aktivitas.';
+        document.getElementById('resultCard').style.borderColor = '#AEF1CC';
+        banner.classList.add('hidden');
+
+        actions.innerHTML = `
+          <button onclick="saveEnergyJejak('Hijau - Relatif Baik')" class="btn-primary py-3.5 shadow-md">
+            Simpan ke Jejak
+          </button>
+        `;
+      } else if (totalScore <= 11) {
+        // KUNING: Mulai kewalahan
+        document.getElementById('resultTitle').textContent = 'Kamu mulai merasa kewalahan';
+        document.getElementById('resultDesc').textContent = 'Kurangi target hari ini dan sisipkan istirahat di antara tugas. Satu langkah kecil sudah cukup.';
+        document.getElementById('resultCard').style.borderColor = '#FFF7AF';
+        banner.classList.add('hidden');
+
+        actions.innerHTML = `
+          <a href="sos-deadline.html" class="btn-primary py-3.5 shadow-md text-center">
+            Atur Ulang Tugas di SOS
+          </a>
+          <button onclick="saveEnergyJejak('Kuning - Mulai Kewalahan')" class="btn-secondary py-3 text-xs bg-white">
+            Simpan ke Jejak
+          </button>
+        `;
+      } else {
+        // MERAH: Butuh perhatian
+        document.getElementById('resultTitle').textContent = 'Kamu butuh perhatian lebih';
+        document.getElementById('resultDesc').textContent = 'Gariskan batas dulu. Kalau terasa berat, pertimbangkan bicara dengan wali atau staf konseling kampus.';
+        document.getElementById('resultCard').style.borderColor = '#FFE5D9';
+        banner.classList.remove('hidden');
+
+        actions.innerHTML = `
+          <a href="profil.html#bantuan" class="btn-primary py-3.5 shadow-md text-center">
+            Lihat Layanan Konseling Kampus
+          </a>
+          <a href="napas.html" class="btn-secondary py-3 text-xs bg-white text-center">
+            Napas 1 Menit
+          </a>
+          <button onclick="saveEnergyJejak('Merah - Butuh Perhatian')" class="btn-secondary py-2.5 text-xs bg-transparent border-none text-[#7A8782]">
+            Simpan ke Jejak
+          </button>
+        `;
+      }
+    }
+
+    function saveEnergyJejak(status) {
+      const entry = {
+        task_name: 'Cek Energi Mingguan',
+        activity_type: 'cek_energi',
+        energy_status: status,
+        created_at: new Date().toISOString()
+      };
+
+      let logs = JSON.parse(localStorage.getItem('mula_energy_logs') || '[]');
+      logs.unshift(entry);
+      localStorage.setItem('mula_energy_logs', JSON.stringify(logs));
+
+      window.location.href = 'jejak-langkah.html';
+    }
+  </script>
+</body>
+</html>
