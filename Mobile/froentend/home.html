@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#90A955">
+<title>Beranda — MULA</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#132A13;--deep:#31572C;--olive:#90A955;--mint:#AEF1CC;--yel:#FFF7AF;--peach:#FFE5D9;--cream:#F8F5E4;--soft:#FEFEFE;--body:#404943;--sage:#7A8782;--bg:#EBEEE6}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--body);display:flex;align-items:center;justify-content:center}
+.screen{position:relative;width:100%;max-width:402px;height:100dvh;max-height:874px;background:var(--cream);overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:520px){.screen{border-radius:38px;box-shadow:0 24px 70px rgba(19,42,19,.18)}}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--deep);outline-offset:2px}
+
+/* header pita zaitun */
+.hd{flex-shrink:0;background:var(--olive);color:#fff;border-radius:0 0 26px 26px;padding:calc(34px + env(safe-area-inset-top)) 22px 18px;display:flex;align-items:center;gap:12px}
+.hd .tx{flex:1;min-width:0}
+.hd h1{font-size:21px;font-weight:700;line-height:1.15}
+.hd small{display:block;font-size:12px;font-weight:500;margin-top:3px}
+.av{flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#C9C3F0;border:0;display:grid;place-items:center;overflow:hidden}
+.av img{width:34px;height:auto;margin-top:6px}
+
+.bd{flex:1;overflow-y:auto;padding:14px 16px 128px;-webkit-overflow-scrolling:touch}
+h2{font-size:20px;font-weight:800;line-height:1.25;color:var(--deep);margin:4px 2px 12px}
+
+/* banner mode tamu */
+.guest{background:var(--mint);border-radius:18px;padding:12px 14px 14px;margin-bottom:14px}
+.guest p{font-size:11px;line-height:1.45;color:var(--ink);margin-bottom:10px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+
+/* kartu kondisi */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cond{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:104px;background:var(--peach);border:2px solid transparent;border-radius:22px;color:var(--ink);font-size:15px;font-weight:700;padding:12px 6px;transition:background .15s}
+.cond.on{background:#EBE9D6;border-color:var(--sage)}
+.cond svg{width:46px;height:46px}
+.bubble{background:var(--yel);border-radius:16px;padding:12px 16px;text-align:center;font-size:13px;line-height:1.4;color:var(--body);margin:12px 0 0}
+
+/* tombol */
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;border:0;border-radius:999px;background:var(--soft);color:var(--ink);font-size:14px;font-weight:700;padding:0 16px;box-shadow:0 1px 3px rgba(19,42,19,.08)}
+.btn.p{background:var(--deep);color:#fff;box-shadow:none}
+.btn.go{margin:14px 0 6px}
+.btn.sm{min-height:46px}
+.btn.txt{background:transparent;box-shadow:none;font-weight:600;color:var(--ink)}
+
+/* motivasi */
+.mot{position:relative;background:var(--yel);border-radius:18px;padding:14px 16px 16px;margin:20px 0 14px;box-shadow:0 4px 8px rgba(19,42,19,.16)}
+.mot b{display:block;font-size:15px;font-weight:700;color:var(--ink)}
+.mot p{font-size:12.5px;font-style:italic;font-weight:500;line-height:1.5;color:var(--ink);margin-top:8px;padding-right:46px}
+.mot img{position:absolute;right:14px;top:-22px;width:46px;height:auto}
+
+/* kartu putih */
+.card{background:var(--soft);border-radius:18px;padding:14px 16px;margin-bottom:14px}
+.card b{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.card p{font-size:13px;line-height:1.5;color:var(--body)}
+.card .row{margin-top:12px}
+.empty{display:flex;align-items:center;gap:12px}
+.empty img{width:54px;height:auto;flex-shrink:0}
+
+/* navigasi bawah */
+.nav{position:absolute;left:14px;right:14px;bottom:calc(16px + env(safe-area-inset-bottom));background:var(--deep);border-radius:999px;display:flex;justify-content:space-around;padding:6px;box-shadow:0 6px 16px rgba(19,42,19,.3)}
+.nav button{background:0;border:0;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;min-width:64px;min-height:50px}
+.nav button[aria-current]{color:var(--sage)}
+.nav svg{width:24px;height:24px;fill:currentColor}
+
+.toast{position:absolute;left:18px;right:18px;top:calc(14px + env(safe-area-inset-top));background:var(--mint);color:var(--ink);border-radius:14px;padding:12px 14px;font-size:13px;font-weight:600;text-align:center;z-index:9;box-shadow:0 6px 16px rgba(0,0,0,.15)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="screen" id="app"></div>
+
+<script>
+(function(){
+'use strict';
+var KEY='mula.v2',DAY=864e5,Q=new URLSearchParams(location.search);
+function $(s){return document.querySelector(s)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+/* ---- state bersama dengan aplikasi utama (localStorage) ---- */
+var S={};try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
+S.user=S.user||{};S.ses=S.ses||[];S.en=S.en||[];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+if(!S.since){S.since=Date.now();save()}
+
+/* parameter pratinjau desain: ?demo=1 | ?tamu=1 | ?kosong=1 | ?pilih=Bingung */
+var demo=Q.get('demo')==='1',tamu=Q.get('tamu')==='1'||(S.mode==='guest'&&!S.hideBan&&!demo),kosong=Q.get('kosong')==='1';
+var nama=demo?'Niki':(S.user.name||'');
+var mood=Q.get('pilih')||'';
+var ses=kosong?[]:S.ses;
+var due=demo||Q.get('energi')==='1'||(Date.now()-Math.max(S.en.length?S.en[S.en.length-1].d:0,S.snooze||0,S.since)>=7*DAY);
+if(kosong)due=false;
+
+/* ---- konten ---- */
+var MOOD=[['Bingung','b','Tenang, kita cari satu langkah kecil dulu.'],['Kewalahan','k','Satu-satu ya. Aku temani.'],['Lelah','l','Pelan-pelan saja. Langkah kecil juga tidak apa-apa.'],['Takut Memulai','t','Kita cuma lihat-lihat dulu, belum perlu mengerjakan.']];
+var MOT=['Tidak apa-apa kalau hari ini cuma sempat mulai sedikit. Sedikit itu tetap maju.','Satu langkah kecil sudah lebih baik dari menunggu siap.','Kamu tidak harus cepat. Kamu cukup mulai.','Hari ini boleh pelan, yang penting bergerak.','Dua menit pun berarti.','Mulai dari bagian yang paling mudah ya.','Rasa enggan itu wajar, dan bisa dilewati pelan-pelan.','Kamu sudah sampai sejauh ini.','Istirahat juga bagian dari proses.','Tidak perlu sempurna untuk mulai.','Satu kalimat tetap dihitung.','Langkah kecil hari ini meringankan hari esok.','Boleh mulai dari mana saja.','Kamu bisa berhenti kapan saja, dan mulai lagi kapan saja.','Pelan-pelan, tapi pasti.','Hari ini cukup satu hal.','Membuka dokumen saja sudah awal yang baik.','Kamu lebih mampu dari yang kamu kira.','Tarik napas dulu, lalu satu langkah.','Setiap percobaan itu berharga.','Tidak ada yang tertinggal. Mulai saja dari sini.','Beban besar bisa dipecah jadi remah kecil.','Kamu boleh minta waktu dan bantuan.','Fokus pada langkah berikutnya, bukan semuanya.','Semangatmu tidak harus besar, cukup ada.','Mulai dulu, rapikan nanti.','Kamu berhak istirahat sebentar.','Hari yang tenang juga hari yang berarti.','Yang penting kamu kembali mencoba.','Terima kasih sudah mau memulai hari ini.'];
+var motivasi=demo?MOT[0]:MOT[Math.floor(Date.now()/DAY)%MOT.length];
+
+/* ---- ikon wajah (pink = kondisi, abu = terpilih) ---- */
+function face(k,on){
+  var f=on?'#BDBFAF':'#F6A6B6',d=on?'#6C6F62':'#7A3F4C',bl=on?'#CFD0C0':'#F18C9C',x='stroke="'+d+'" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"',
+  e='<circle cx="17" cy="23" r="2" fill="'+d+'"/><circle cx="31" cy="23" r="2" fill="'+d+'"/>',
+  m={
+   b:'<path d="M12 17q4-3 8-1" '+x+'/>'+e+'<path d="M18 33h10" '+x+'/>',
+   k:'<path d="M12 21l7-3M36 21l-7-3" '+x+'/><circle cx="17" cy="25" r="2" fill="'+d+'"/><circle cx="31" cy="25" r="2" fill="'+d+'"/><path d="M12 30l3 1M13 33l3 0M36 30l-3 1M35 33l-3 0" stroke="'+bl+'" stroke-width="1.8" stroke-linecap="round"/><path d="M18 36q6-5 12 0" '+x+'/>',
+   l:'<path d="M12 23q5 4 10 0M26 23q5 4 10 0" '+x+'/><path d="M19 35q5-2 10 0" '+x+'/><path d="M37 26q3 4 0 6-3-2 0-6z" fill="#D7E6F0" stroke="none"/>',
+   t:'<path d="M12 19q4-3 8-1M36 19q-4-3-8-1" '+x+'/><circle cx="17" cy="25" r="2.6" fill="'+d+'"/><circle cx="31" cy="25" r="2.6" fill="'+d+'"/><circle cx="12" cy="31" r="2.6" fill="'+bl+'"/><circle cx="36" cy="31" r="2.6" fill="'+bl+'"/><path d="M18 37q2-3 4 0t4 0 4 0" '+x+'/>'
+  }[k];
+  return '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="'+f+'"/>'+m+'</svg>';
+}
+var NAV={home:'<svg viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>',
+ mulai:'<svg viewBox="0 0 24 24"><path d="M9 1.5h6V4H9zM19 6l1.6 1.6-1.6 1.6z"/><path fill-rule="evenodd" d="M12 5a8.500 8.500 0 100 17 8.500 8.500 0 000-17zm-1 4h2v4.400l2.800 1.700-1 1.700L11 14.500z"/></svg>',
+ sos:'<svg viewBox="0 0 24 24"><path d="M5 19v-5a7 7 0 0114 0v5h2v2H3v-2zM11 2h2v3h-2zM3.500 5.400L4.900 4l2 2-1.400 1.400zM19.100 4l1.400 1.400-2 2L17.100 6z"/></svg>',
+ jejak:'<svg viewBox="0 0 24 24"><ellipse cx="8" cy="9" rx="3" ry="5"/><ellipse cx="16" cy="15" rx="3" ry="5"/><circle cx="6" cy="3" r="1.300"/><circle cx="9" cy="2.500" r="1.300"/><circle cx="14" cy="9" r="1.300"/><circle cx="17" cy="8.500" r="1.300"/></svg>'};
+var NAVL=[['home','Beranda'],['mulai','Mulai'],['sos','SOS'],['jejak','Jejak']];
+
+/* ---- aktivitas terakhir ---- */
+function aktivitas(){
+  var l=ses.length?ses[ses.length-1]:null;
+  if(demo)return{ada:1,t:'Kemarin kamu menyelesaikan 2 sesi Mulai 2 Menit'};
+  if(!l)return{ada:0,t:'Belum ada aktivitas. Satu sesi kecil hari ini sudah cukup jadi awal.'};
+  var d0=new Date().setHours(0,0,0,0),ld=new Date(l.d).setHours(0,0,0,0),diff=Math.round((d0-ld)/DAY);
+  var n=ses.filter(function(x){return x.st==='selesai'&&new Date(x.d).setHours(0,0,0,0)===ld}).length;
+  var hari=diff===0?'Hari ini':diff===1?'Kemarin':new Date(l.d).toLocaleDateString('id-ID',{day:'numeric',month:'short'});
+  return{ada:1,t:hari+' kamu '+(n?'menyelesaikan '+n+' sesi Mulai 2 Menit':'mencoba memulai')};
+}
+
+/* ---- render ---- */
+function render(){
+  var m=null;MOOD.forEach(function(x){if(x[0]===mood)m=x});
+  var a=aktivitas(),sapa=tamu&&!nama?'Hai, teman!':'Hai '+(nama||'teman')+'!';
+  $('#app').innerHTML=
+   '<header class="hd"><div class="tx"><h1>'+esc(sapa)+'</h1><small>Siap melangkah pelan hari ini?</small></div>'+
+   '<button class="av" id="avatar" aria-label="Buka profil dan pengaturan"><img src="img/e01.png" alt=""></button></header>'+
+   '<main class="bd" id="main">'+
+   (tamu?'<section class="guest" aria-label="Mode Tamu"><p>Kamu sedang dalam Mode Tamu. Simpan progresmu agar aman di semua perangkat.</p><div class="row"><button class="btn p sm" id="simpan">Simpan Progres</button><button class="btn sm" id="nanti1">Nanti</button></div></section>':'')+
+   '<h2>Hari ini kamu sedang merasa bagaimana?</h2>'+
+   '<div class="grid" role="group" aria-label="Pilih kondisimu hari ini">'+MOOD.map(function(x){var on=mood===x[0];return '<button class="cond'+(on?' on':'')+'" data-m="'+x[0]+'" aria-pressed="'+on+'">'+face(x[1],on)+x[0]+'</button>'}).join('')+'</div>'+
+   (m?'<div class="bubble" role="status">'+m[2]+'</div>':'')+
+   '<button class="btn p go" id="mulai">Mulai 2 Menit</button>'+
+   '<section class="mot"><b>Motivasi Hari ini</b><p>“'+esc(motivasi)+'”</p><img src="img/e11.png" alt=""></section>'+
+   (due?'<section class="card"><p>Sudah seminggu nih. Mau cek energimu sebentar?</p><div class="row"><button class="btn p sm" id="energi">Cek Energi</button><button class="btn txt sm" id="nanti2">Nanti</button></div></section>':'')+
+   '<section class="card"><b>Aktivitas Terakhir</b>'+(a.ada?'<p>'+esc(a.t)+'</p>':'<div class="empty"><img src="img/e01.png" alt=""><p>'+esc(a.t)+'</p></div>')+'</section>'+
+   '</main>'+
+   '<nav class="nav" aria-label="Navigasi utama">'+NAVL.map(function(x){return '<button data-n="'+x[0]+'"'+(x[0]==='home'?' aria-current="page"':'')+'>'+NAV[x[0]]+x[1]+'</button>'}).join('')+'</nav>';
+}
+
+function toast(t){var d=document.createElement('div');d.className='toast';d.setAttribute('role','status');d.textContent=t;$('#app').appendChild(d);setTimeout(function(){d.remove()},2600)}
+function goApp(r){try{sessionStorage.setItem('mula.goto',r)}catch(e){}location.href='index.html'}
+
+/* ---- interaksi ---- */
+document.addEventListener('click',function(e){
+  var t=e.target.closest('button');if(!t)return;
+  if(t.dataset.m){mood=mood===t.dataset.m?'':t.dataset.m;var y=$('#main').scrollTop;render();$('#main').scrollTop=y;return}
+  if(t.dataset.n){if(t.dataset.n!=='home')goApp(t.dataset.n);return}
+  switch(t.id){
+    case 'mulai':try{sessionStorage.setItem('mula.mood',mood)}catch(x){}goApp('flow');break;
+    case 'avatar':goApp('profil');break;
+    case 'energi':goApp('e0');break;
+    case 'simpan':goApp('simpan');break;
+    case 'nanti1':S.hideBan=true;save();tamu=false;render();break;
+    case 'nanti2':S.snooze=Date.now();save();due=false;render();toast('Oke, nanti kita ingatkan lagi.');break;
+  }
+});
+render();
+})();
+</script>
+</body>
+</html>
